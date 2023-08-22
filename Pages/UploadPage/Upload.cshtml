@@ -1,0 +1,40 @@
+﻿@page
+@using AutoParts.Model;
+@model AutoParts.Pages.UploadModel
+@{
+}
+<main>
+    <h1>Добавить новый тип запчасти?</h1>
+    <form method="post">
+        <div>
+            <label asp-for="AutoPart.Name"></label>
+            <input asp-for="AutoPart.Name">
+            <span asp-validation-for="AutoPart.Name"></span>
+        </div>
+        <div>
+            <label asp-for="AutoPart.Applicability"></label>
+            <input asp-for="AutoPart.Applicability">
+            <span asp-validation-for="AutoPart.Applicability"></span>
+        </div>
+        <div>
+            <label asp-for="AutoPart.PriceInRubles"></label>
+            <input asp-for="AutoPart.PriceInRubles">
+            <span asp-validation-for="AutoPart.PriceInRubles"></span>
+        </div>
+        <div>
+            <label asp-for="AutoPart.PriceInTenge"></label>
+            <input asp-for="AutoPart.PriceInTenge">
+            <span asp-validation-for="AutoPart.PriceInTenge"></span>
+        </div>
+        <div>
+            <label asp-for="AutoPart.Company"></label>
+            <input asp-for="AutoPart.Company">
+            <span asp-validation-for="AutoPart.Company"></span>
+        </div>
+        <div>
+            <label asp-for="AutoPart.Images"></label>
+            <input type="file" asp-for="AutoPart.Images" multiple>
+            <span asp-validation-for="AutoPart.Images"></span>
+        </div>
+    </form>
+</main>
