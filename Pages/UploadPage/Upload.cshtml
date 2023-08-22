@@ -4,7 +4,7 @@
 @{
 }
 <main>
-    <h1>Добавить новый тип запчасти?</h1>
+    <h1>Add a new type of auto part</h1>
     <form method="post">
         <div>
             <label asp-for="AutoPart.Name"></label>
@@ -17,24 +17,31 @@
             <span asp-validation-for="AutoPart.Applicability"></span>
         </div>
         <div>
+            <label asp-for="AutoPart.Company"></label>
+            <input asp-for="AutoPart.Company">
+            <span asp-validation-for="AutoPart.Company"></span>
+        </div>
+        <div>
             <label asp-for="AutoPart.PriceInRubles"></label>
-            <input asp-for="AutoPart.PriceInRubles">
+            <input asp-for="AutoPart.PriceInRubles" value="0">
             <span asp-validation-for="AutoPart.PriceInRubles"></span>
         </div>
         <div>
             <label asp-for="AutoPart.PriceInTenge"></label>
-            <input asp-for="AutoPart.PriceInTenge">
+            <input asp-for="AutoPart.PriceInTenge" value="0">
             <span asp-validation-for="AutoPart.PriceInTenge"></span>
         </div>
         <div>
-            <label asp-for="AutoPart.Company"></label>
-            <input asp-for="AutoPart.Company">
-            <span asp-validation-for="AutoPart.Company"></span>
+            <label asp-for="AutoPart.Amount"></label>
+            <input asp-for="AutoPart.Amount" value="0">
+            <span asp-validation-for="AutoPart.Amount"></span>
         </div>
         <div>
             <label asp-for="AutoPart.Images"></label>
             <input type="file" asp-for="AutoPart.Images" multiple>
             <span asp-validation-for="AutoPart.Images"></span>
         </div>
+        <button type="submit">Add</button>
+        <button type="reset">Reset</button>
     </form>
 </main>

@@ -5,6 +5,7 @@ CREATE TABLE AutoParts(
     [Name] NVARCHAR(MAX) NOT NULL,
     [Applicability] VARCHAR(MAX) NOT NULL,
     [Company] NVARCHAR(MAX),
-    [PriceInRubles] SMALLMONEY,
-    [PriceInTenge] SMALLMONEY
+    [PriceInRubles] SMALLMONEY CONSTRAINT DF_PriceInRubles DEFAULT 0,
+    [PriceInTenge] SMALLMONEY CONSTRAINT DF_PriceInTenge DEFAULT 0,
+    [Amount] SMALLINT NOT NULL CONSTRAINT DF_Amount DEFAULT 0
 );

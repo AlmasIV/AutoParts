@@ -18,7 +18,8 @@ public class UploadModel : PageModel
     public IActionResult OnPost(){
         if(ModelState.IsValid){
             Console.WriteLine("Success!");
+            return RedirectToPage("../Index");
         }
-        return RedirectToPage("../Index");
+        return Page();
     }
 }
