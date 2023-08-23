@@ -16565,6 +16565,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/almas/Desktop/AutoParts/Pages/UploadPage/UploadClarification.cshtml",
+      "TargetPath": "Pages\\UploadPage\\UploadClarification.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/almas/Desktop/AutoParts/Pages/_ViewStart.cshtml",
       "TargetPath": "Pages\\_ViewStart.cshtml",
       "FileKind": "mvc"

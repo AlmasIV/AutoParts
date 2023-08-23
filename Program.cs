@@ -8,6 +8,7 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
+        builder.Services.AddSingleton<DatabaseAcessString>();
         builder.Services.AddScoped<DatabaseAcess>();
 
         var app = builder.Build();
