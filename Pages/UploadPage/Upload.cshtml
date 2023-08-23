@@ -6,42 +6,44 @@
 <main>
     <h1>Add a new type of auto part</h1>
     <form method="post">
-        <div>
+        <div class="input-container">
             <label asp-for="AutoPart.Name"></label>
             <input asp-for="AutoPart.Name">
-            <span asp-validation-for="AutoPart.Name"></span>
+            <span class="error-message" asp-validation-for="AutoPart.Name"></span>
         </div>
-        <div>
+        <div class="input-container">
             <label asp-for="AutoPart.Applicability"></label>
             <input asp-for="AutoPart.Applicability">
-            <span asp-validation-for="AutoPart.Applicability"></span>
+            <span class="error-message" asp-validation-for="AutoPart.Applicability"></span>
         </div>
-        <div>
+        <div class="input-container">
             <label asp-for="AutoPart.Company"></label>
             <input asp-for="AutoPart.Company">
-            <span asp-validation-for="AutoPart.Company"></span>
+            <span class="error-message" asp-validation-for="AutoPart.Company"></span>
         </div>
-        <div>
+        <div class="input-container">
             <label asp-for="AutoPart.PriceInRubles"></label>
             <input asp-for="AutoPart.PriceInRubles" value="0">
-            <span asp-validation-for="AutoPart.PriceInRubles"></span>
+            <span class="error-message" asp-validation-for="AutoPart.PriceInRubles"></span>
         </div>
-        <div>
+        <div class="input-container">
             <label asp-for="AutoPart.PriceInTenge"></label>
             <input asp-for="AutoPart.PriceInTenge" value="0">
-            <span asp-validation-for="AutoPart.PriceInTenge"></span>
+            <span class="error-message" asp-validation-for="AutoPart.PriceInTenge"></span>
         </div>
-        <div>
+        <div class="input-container">
             <label asp-for="AutoPart.Amount"></label>
             <input asp-for="AutoPart.Amount" value="0">
-            <span asp-validation-for="AutoPart.Amount"></span>
+            <span class="error-message" asp-validation-for="AutoPart.Amount"></span>
         </div>
-        <div>
+        <div class="input-container">
             <label asp-for="AutoPart.Images"></label>
             <input type="file" asp-for="AutoPart.Images" multiple>
-            <span asp-validation-for="AutoPart.Images"></span>
+            <span class="error-message" asp-validation-for="AutoPart.Images"></span>
         </div>
-        <button type="submit">Add</button>
-        <button type="reset">Reset</button>
+        <div class="btn-container">
+            <button type="submit">Add</button>
+            <button type="reset">Reset</button>
+        </div>
     </form>
 </main>
