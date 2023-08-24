@@ -13,6 +13,7 @@ public class AutoPart{
 
     [Required(), MinLength(3)]
     public string Applicability { get; set; }
+    public string? Company { get; set; }
 
 
     [Range(0, int.MaxValue), DisplayName("Price(₽ - RUB)")]
@@ -21,9 +22,6 @@ public class AutoPart{
 
     [Range(0, int.MaxValue), DisplayName("Price(₸ - KZT)")]
     public decimal PriceInTenge { get; set; }
-
-
-    public string? Company { get; set; }
 
 
     [Range(0, short.MaxValue)]
