@@ -10,20 +10,18 @@ public class UploadModel : PageModel
     private readonly DatabaseAcess _databaseAccess;
     [BindProperty]
     public AutoPart? AutoPart { get; set; }
-    private AutoPart? _autoPart { get; set; } = new AutoPart();
     public UploadModel(DatabaseAcess databaseAcess){
         _databaseAccess = databaseAcess;
     }
     public void OnGet()
     {
+        
     }
     public IActionResult OnPost(){
         if(ModelState.IsValid){
-            return RedirectToPage("UploadClarification");
+            bool isSuccess = _databaseAccess.InsertData(AutoPart!);
+            return RedirectToPage("../Index");
         }
         return Page();
-    }
-    public IActionResult OnPostConfirm(){
-        return RedirectToPage("../Index");
     }
 }
