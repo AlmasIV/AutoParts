@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ilvjBPj7X9J7gRWTgWzhwn9gBaW+DXj9/Lmgw4enBYQ=",
+  "Hash": "YcCyE+xO6aQyEnZgb+4yH/PzOQJ1BtL6+c2xGKl7ojY=",
   "Source": "AutoParts",
   "BasePath": "_content/AutoParts",
   "Mode": "Default",
@@ -66,6 +66,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/home/almas/Desktop/AutoParts/wwwroot/html/ErrorPages/serverError.html",
+      "SourceId": "AutoParts",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/almas/Desktop/AutoParts/wwwroot/",
+      "BasePath": "_content/AutoParts",
+      "RelativePath": "html/ErrorPages/serverError.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/html/ErrorPages/serverError.html"
     }
   ]
 }

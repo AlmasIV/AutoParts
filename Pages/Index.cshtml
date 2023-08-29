@@ -1,6 +1,54 @@
 ﻿@page
+@using AutoParts.Model
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    string[] identifiers = {
+        "index",
+        "name",
+        "applicability",
+        "company",
+        "priceInRubles",
+        "priceInTenge",
+        "amount"
+    };
 }
-
+<main id="autoPartsTable">
+    <table>
+        <tr>
+            <th id=@identifiers[0]>
+                Index
+            </th>
+            <th id=@identifiers[1]>
+                Name
+            </th>
+            <th id=@identifiers[2]>
+                Applicability
+            </th>
+            <th id=@identifiers[3]>
+                Company
+            </th>
+            <th id=@identifiers[4]>
+                Price in RUB
+            </th>
+            <th id=@identifiers[5]>
+                Price in KZT
+            </th>
+            <th id=@identifiers[6]>
+                Amount
+            </th>
+        </tr>
+        @foreach (AutoPart item in Model.AutoParts)
+        {
+            <tr>
+                <td headers=@identifiers[0]>@item.Id</td>
+                <td headers=@identifiers[1]>@item.Name</td>
+                <td headers=@identifiers[2]>@item.Applicability</td>
+                <td headers=@identifiers[3]>@(item.Company == null ? "Unknown" : item.Company)</td>
+                <td headers=@identifiers[4]>@item.PriceInRubles</td>
+                <td headers=@identifiers[5]>@item.PriceInTenge</td>
+                <td header=@identifiers[6]>@item.Amount</td>
+            </tr>
+        }
+    </table>
+</main>

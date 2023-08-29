@@ -9,7 +9,7 @@ public class IndexModel : PageModel
 {
     private readonly DatabaseAcess _databaseAccess;
     [BindNever]
-    private List<AutoPart>? _autoParts { get; set; } = null;
+    public List<AutoPart>? AutoParts { get; set; } = null;
     public IndexModel(DatabaseAcess databaseAcess)
     {
         _databaseAccess = databaseAcess;
@@ -19,9 +19,9 @@ public class IndexModel : PageModel
     {
         (bool isSuccess, List<AutoPart>? autoParts) outputs = _databaseAccess.RetrieveAll();
         if(outputs.isSuccess){
-            _autoParts = outputs.autoParts;
+            AutoParts = outputs.autoParts;
             return Page();
         }
-        return PhysicalFile("~/", "text/html");
+        return File("~/html/ErrorPages/serverError.html", "text/html");
     }
 }

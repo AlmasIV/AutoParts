@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/home/almas/Desktop/AutoParts/wwwroot/html/ErrorPages/serverError.html",
+      "PackagePath": "staticwebassets/html/ErrorPages/serverError.html"
+    },
+    {
       "Id": "obj/Debug/net7.0/staticwebassets/msbuild.AutoParts.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
