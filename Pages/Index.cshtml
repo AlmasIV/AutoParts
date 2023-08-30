@@ -1,5 +1,6 @@
 ﻿@page
 @using AutoParts.Model
+@using System.Text.Json
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -10,14 +11,15 @@
         "company",
         "priceInRubles",
         "priceInTenge",
-        "amount"
+        "amount",
+        "sell"
     };
 }
 <main id="autoPartsTable">
     <table>
         <tr>
             <th id=@identifiers[0]>
-                Index
+                №
             </th>
             <th id=@identifiers[1]>
                 Name
@@ -29,17 +31,21 @@
                 Company
             </th>
             <th id=@identifiers[4]>
-                Price in RUB
+                Price(RUB)
             </th>
             <th id=@identifiers[5]>
-                Price in KZT
+                Price(KZT)
             </th>
             <th id=@identifiers[6]>
                 Amount
             </th>
+            <th id=@identifiers[7]>
+                Operation
+            </th>
         </tr>
         @foreach (AutoPart item in Model.AutoParts)
         {
+            Console.WriteLine(JsonSerializer.Serialize(item));
             <tr>
                 <td headers=@identifiers[0]>@item.Id</td>
                 <td headers=@identifiers[1]>@item.Name</td>
@@ -48,7 +54,19 @@
                 <td headers=@identifiers[4]>@item.PriceInRubles</td>
                 <td headers=@identifiers[5]>@item.PriceInTenge</td>
                 <td header=@identifiers[6]>@item.Amount</td>
+                <td headers=@identifiers[7] class="btnCell" role="button" tabindex=0 onclick=addToBag('@Html.Raw(JsonSerializer.Serialize(item))')>
+                    Sell
+                </td>
             </tr>
         }
     </table>
 </main>
+
+@section Scripts {
+    <script>
+        function addToBag(id){
+            console.log(id.toString());
+            alert(JSON.parse(id));
+        }
+    </script>
+}
