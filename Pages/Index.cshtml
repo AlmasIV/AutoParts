@@ -1,6 +1,6 @@
 ﻿@page
 @using AutoParts.Model
-@using System.Text.Json
+
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -45,7 +45,6 @@
         </tr>
         @foreach (AutoPart item in Model.AutoParts)
         {
-            Console.WriteLine(JsonSerializer.Serialize(item));
             <tr>
                 <td headers=@identifiers[0]>@item.Id</td>
                 <td headers=@identifiers[1]>@item.Name</td>
@@ -54,7 +53,7 @@
                 <td headers=@identifiers[4]>@item.PriceInRubles</td>
                 <td headers=@identifiers[5]>@item.PriceInTenge</td>
                 <td header=@identifiers[6]>@item.Amount</td>
-                <td headers=@identifiers[7] class="btnCell" role="button" tabindex=0 onclick=addToBag('@Html.Raw(JsonSerializer.Serialize(item))')>
+                <td headers=@identifiers[7] class="btnCell" role="button" tabindex=0 onclick="addToBag(@item.Id)">
                     Sell
                 </td>
             </tr>
@@ -64,9 +63,27 @@
 
 @section Scripts {
     <script>
+        class Product {
+            #id;
+            #amount;
+            constructor(id){
+                this.#id = id;
+                this.#amount = 1;
+            }
+            incrementAmount(){
+                this.#amount ++;
+            }
+            toJSON(){
+                return {
+                    id: this.#id,
+                    amount: this.#amount
+                };
+            }
+        }
+        const bag = new Set();
         function addToBag(id){
-            console.log(id.toString());
-            alert(JSON.parse(id));
+            const product = new Product(id);
+            alert("You bought this item " + id.toString() + "\n" + JSON.stringify(product));
         }
     </script>
 }
