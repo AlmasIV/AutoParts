@@ -63,27 +63,32 @@
 
 @section Scripts {
     <script>
+        "use strict";
         class Product {
-            #id;
-            #amount;
+            id;
+            amount;
             constructor(id){
-                this.#id = id;
-                this.#amount = 1;
-            }
-            incrementAmount(){
-                this.#amount ++;
-            }
-            toJSON(){
-                return {
-                    id: this.#id,
-                    amount: this.#amount
-                };
+                this.id = id;
+                this.amount = 1;
             }
         }
-        const bag = new Set();
+        const bag = new Map();
+        let product, isCreated = false;
         function addToBag(id){
-            const product = new Product(id);
-            alert("You bought this item " + id.toString() + "\n" + JSON.stringify(product));
+            product = new Product(id);
+            if(bag.has(product.id)){
+                bag.get(product.id).amount ++;
+            }
+            else{
+                bag.set(product.id, product);
+            }
+            if(!isCreated){
+                createPurchaseList();
+            }
+        }
+        function createPurchaseList(){
+            
+            isCreated = true;
         }
     </script>
 }
