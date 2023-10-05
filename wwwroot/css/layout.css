@@ -52,6 +52,7 @@ table {
     margin-top: 5vh;
     font-size: 1.5rem;
     text-align: center;
+    margin-bottom: 5vh;
 }
 table, th, td {
     border: 0.2vw solid black;
@@ -70,4 +71,26 @@ td.btnCell {
 td.btnCell:hover {
     font-size: 1.5rem;
     background-color: rgb(100, 255, 100);
+}
+
+/*Product bag styles.*/
+#bag {
+    width: 15vw;
+    height: 5vh;
+    background-color: black;
+    position: fixed;
+    bottom: 0.5vh;
+    right: 0.5vw;
+    line-height: 5vh;
+    box-sizing: border-box;
+}
+#bag p {
+    font-size: 1.5rem;
+    text-align: center;
+    color: white;
+}
+#bag:hover {
+    height: 7vh;
+    line-height: 7vh;
+    width: 20vw;
 }
