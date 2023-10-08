@@ -12,7 +12,7 @@ main {
     width: 70vw;
     margin: auto;
 }
-.input-container label, input, span {
+.input-container label, input, .error-message {
     display: block;
     width: 100%;
     font-size: 1.5rem;
@@ -67,27 +67,42 @@ tr:nth-child(even){
 td.btnCell {
     background-color: rgb(188, 255, 188);
     font-size: 1.4rem;
+    transition: 0.5s;
 }
 td.btnCell:hover {
     font-size: 1.5rem;
-    background-color: rgb(100, 255, 100);
+    background-color: rgb(0, 255, 0);
+    font-weight: bolder;
 }
 
 /*Product bag styles.*/
+#bagWrapper {
+    position: fixed;
+    bottom: 0.5vh;
+    right: 0.5vw;
+    font-size: 1.2rem;
+    text-align: center;
+}
+.productsDesc {
+    display: none;
+    background-color: aliceblue;
+    opacity: 0;
+    transition: 1s;
+}
+.smoothTransition {
+    opacity: 1!important;
+}
 #bag {
     width: 15vw;
     height: 5vh;
     background-color: black;
-    position: fixed;
-    bottom: 0.5vh;
-    right: 0.5vw;
     line-height: 5vh;
     box-sizing: border-box;
+    transition: 0.5s;
 }
 #bag p {
-    font-size: 1.5rem;
-    text-align: center;
     color: white;
+    font-size: 1.5rem;
 }
 #bag:hover {
     height: 7vh;

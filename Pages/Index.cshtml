@@ -53,37 +53,18 @@
                 <td headers="@identifiers[4]">@item.PriceInRubles</td>
                 <td headers="@identifiers[5]">@item.PriceInTenge</td>
                 <td header="@identifiers[6]">@item.Amount</td>
-                <td headers="@identifiers[7]" class="btnCell" role="button" tabindex=0 onclick="addToBag(@item.Id)">
+                <td data-product-id="@item.Id" headers="@identifiers[7]" class="btnCell sellingBtn" role="button" tabindex=0>
                     Sell
                 </td>
             </tr>
         }
     </table>
 </main>
-<div id="bag">
-    <p>Selected Items <span id="bagCount">0</span></p>
+<div id="bagWrapper">
+    <div id="test" class="productsDesc">
+        You have no products here.
+    </div>
+    <div id="bag">
+        <p>Selected Items <span id="bagCount">0</span></p>
+    </div>
 </div>
-@section Scripts {
-    <script>
-        "use strict";
-        class Product {
-            id;
-            amount;
-            constructor(id){
-                this.id = id;
-                this.amount = 1;
-            }
-        }
-        const bag = new Map();
-        let product, isCreated = false;
-        function addToBag(id){
-            product = new Product(id);
-            if(bag.has(product.id)){
-                bag.get(product.id).amount ++;
-            }
-            else{
-                bag.set(product.id, product);
-            }
-        }
-    </script>
-}
