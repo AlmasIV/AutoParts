@@ -1,13 +1,7 @@
 "use strict";
 
-class Product{
-    constructor(id){
-        this.id = id;
-        this.amount = 1;
-    }
-}
-
 const bag = new Map();
+let itemCount = 0;
 
 let product, isCreated = false;
 
@@ -23,19 +17,45 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 function addToBag(id){
-    product = new Product(id);
+    product = { id: id, amount: 1 };
     if(bag.has(product.id)){
         bag.get(product.id).amount++;
     }
     else{
         bag.set(product.id, product);
     }
+    itemCount ++;
+    UpdateProductCount(id);
+}
+
+const productCount = document.getElementById("bagCount");
+const productsDesc = document.getElementById("productsDesc");
+const itemsInfo = document.getElementById("itemsInfo");
+
+const detailedProducts = new Map();
+
+function UpdateProductCount(id){
+    productCount.textContent = itemCount;
+    if(itemCount > 0){
+        productsDesc.textContent = "Selling " + itemCount + " items in total.";
+        let tr, name, applicability, company, price;
+        bag.forEach(function(value, key, bag){
+            tr = document.querySelector(`main#autoPartsTable table tr[data-item-id="${key}"]`);
+            name = tr.querySelector("td[headers='name']");
+            applicability = tr.querySelector("td[headers='applicability']");
+            company = tr.querySelector("td[headers='company']");
+            price = tr.querySelector("td[headers='priceInTenge']");
+            if(!detailedProducts.has(key)){
+                detailedProducts.add(key, { name, applicability, company, price, amount: value.amount });
+            }
+        });
+    }
+    else{
+        productsDesc.textContent = "You have no products here.";
+    }
 }
 
 const bagBtn = document.getElementById("bag");
-const productsDesc = document.getElementById("productsDesc");
-const bagText = document.getElementById("bagText");
-const productCount = document.getElementById("bagCount");
 
 let isBagBtnActive = false;
 
@@ -47,13 +67,11 @@ bagBtn.addEventListener("mouseout", function(){
 });
 bagBtn.addEventListener("click", function(){
     if(!isBagBtnActive){
-        console.log("I an here.");
         showProductsDesc();
         bagBtn.classList.add("activeBag");
         isBagBtnActive = true;
     }
     else{
-        console.log("I am here!");
         hideProductsDesc();
         bagBtn.classList.remove("activeBag");
         isBagBtnActive = false;

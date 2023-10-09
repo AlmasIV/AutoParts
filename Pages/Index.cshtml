@@ -45,7 +45,7 @@
         </tr>
         @foreach (AutoPart item in Model.AutoParts)
         {
-            <tr>
+            <tr data-item-id="@item.Id">
                 <td headers="@identifiers[0]">@item.Id</td>
                 <td headers="@identifiers[1]">@item.Name</td>
                 <td headers="@identifiers[2]">@item.Applicability</td>
@@ -61,8 +61,8 @@
     </table>
 </main>
 <div id="bagWrapper">
-    <div id="productsDesc">
-        You have no products here.
+    <div id="itemsInfo">
+        <p id="productsDesc">You have no products here.</p>
     </div>
     <div id="bag">
         <p>Selected Items <span id="bagCount">0</span></p>

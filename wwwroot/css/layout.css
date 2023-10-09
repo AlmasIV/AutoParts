@@ -108,6 +108,6 @@ td.btnCell:hover {
     width: 20vw;
 }
 #bag:active {
-    background-color: rgb(63, 63, 63);
+    background-color: purple;
     transition: 0s;
 }
