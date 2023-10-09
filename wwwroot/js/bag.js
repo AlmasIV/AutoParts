@@ -33,12 +33,36 @@ function addToBag(id){
 }
 
 const bagBtn = document.getElementById("bag");
-const productsDesc = document.getElementById("test");
+const productsDesc = document.getElementById("productsDesc");
+const bagText = document.getElementById("bagText");
+const productCount = document.getElementById("bagCount");
 
-bagBtn.addEventListener("mouseover", function(){
-    productsDesc.style.display = "block";
-    productsDesc.classList.add("smoothTransition");
-});
+let isBagBtnActive = false;
+
+bagBtn.addEventListener("mouseover", showProductsDesc);
 bagBtn.addEventListener("mouseout", function(){
-    productsDesc.style.display = "none";
+    if(!isBagBtnActive){
+        hideProductsDesc();
+    }
 });
+bagBtn.addEventListener("click", function(){
+    if(!isBagBtnActive){
+        console.log("I an here.");
+        showProductsDesc();
+        bagBtn.classList.add("activeBag");
+        isBagBtnActive = true;
+    }
+    else{
+        console.log("I am here!");
+        hideProductsDesc();
+        bagBtn.classList.remove("activeBag");
+        isBagBtnActive = false;
+    }
+});
+
+function showProductsDesc(){
+    productsDesc.style.display = "block";
+}
+function hideProductsDesc(){
+    productsDesc.style.display = "none";
+}

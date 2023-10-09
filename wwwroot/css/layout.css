@@ -83,14 +83,12 @@ td.btnCell:hover {
     font-size: 1.2rem;
     text-align: center;
 }
-.productsDesc {
+#productsDesc {
     display: none;
+    padding: 1vh;
+    max-height: 65vh;
+    overflow-y: auto;
     background-color: aliceblue;
-    opacity: 0;
-    transition: 1s;
-}
-.smoothTransition {
-    opacity: 1!important;
 }
 #bag {
     width: 15vw;
@@ -98,14 +96,18 @@ td.btnCell:hover {
     background-color: black;
     line-height: 5vh;
     box-sizing: border-box;
-    transition: 0.5s;
+    transition: all 0.5s;
 }
 #bag p {
     color: white;
     font-size: 1.5rem;
 }
-#bag:hover {
+#bag:hover, #bag.activeBag {
     height: 7vh;
     line-height: 7vh;
     width: 20vw;
+}
+#bag:active {
+    background-color: rgb(63, 63, 63);
+    transition: 0s;
 }
