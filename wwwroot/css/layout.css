@@ -111,3 +111,13 @@ td.btnCell:hover {
     background-color: purple;
     transition: 0s;
 }
+
+/*Product list styles.*/
+.productContainer p{
+    max-width: 20vw;
+}
+
+#itemsInfo{
+    max-height: 50vh;
+    overflow-y: auto;
+}
