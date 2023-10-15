@@ -55,7 +55,7 @@ table {
     margin-bottom: 5vh;
 }
 table, th, td {
-    border: 0.2vw solid black;
+    border: 0.2vh solid black;
     border-collapse: collapse;
 }
 td, th {
@@ -73,6 +73,7 @@ td.btnCell:hover {
     font-size: 1.5rem;
     background-color: rgb(0, 255, 0);
     font-weight: bolder;
+    cursor: pointer;
 }
 
 /*Product bag styles.*/
@@ -97,6 +98,7 @@ td.btnCell:hover {
     line-height: 5vh;
     box-sizing: border-box;
     transition: all 0.5s;
+    cursor: pointer;
 }
 #bag p {
     color: white;
@@ -120,4 +122,22 @@ td.btnCell:hover {
 #itemsInfo{
     max-height: 50vh;
     overflow-y: auto;
+    max-width: 20vw;
+}
+
+.productContainer:nth-child(even){
+    background-color: rgb(206, 206, 206);
+}
+.productContainer:nth-child(odd){
+    background-color: rgb(243, 243, 243);
+}
+.productContainer{
+    position: relative;
+    margin: 1vh 0.5vh;
+    border: 1px solid black;
+    box-shadow: 0.2vh 0.2vh 0.5vh 0.2vh black;
+}
+.productContainer:hover{
+    left: -0.5vh;
+    box-shadow: 0.2vh 0.2vh 0.5vh 0.4vh black;
 }

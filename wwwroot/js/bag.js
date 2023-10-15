@@ -53,44 +53,47 @@ function updateProductCount(id){
 
 const createdProducts = new Map();
 
+function createProductProperty(element, className, text){
+    let property = document.createElement(element);
+    if(className !== null){
+        property.classList.add(className);
+    }
+    property.textContent = text;
+    return property;
+}
+
 function createProduct(id){
+    let paragraph, prop;
+
     let detailedProduct = detailedProducts.get(id);
 
     let container = document.createElement("div");
     container.classList.add("productContainer");
     container.id = "product_" + id;
+
+    appendProductProperty("Name: ", "productName", detailedProduct.name);
     
-    let name = document.createElement("p");
-    name.classList.add("productName");
-    name.textContent = "Name: " + detailedProduct.name;
-    container.appendChild(name);
+    appendProductProperty("Applicability: ", "productApplicability", detailedProduct.applicability);
+    
+    appendProductProperty("Company: ", "productCompany", detailedProduct.company);
 
-    let applicability = document.createElement("p");
-    applicability.classList.add("productApplicability");
-    applicability.textContent = "Applicability: " + detailedProduct.applicability;
-    container.appendChild(applicability);
+    appendProductProperty("Price: ", "productPrice", detailedProduct.price);
 
-    let company = document.createElement("p");
-    company.classList.add("productCompany");
-    company.textContent = "Company: " + detailedProduct.company;
-    container.appendChild(company);
-
-    let price = document.createElement("p");
-    price.classList.add("productPrice");
-    price.textContent = "Price: " + detailedProduct.price;
-    container.appendChild(price);
-
-    let amount = document.createElement("p");
-    amount.classList.add("productAmount");
-    amount.textContent = "Amount: " + detailedProduct.amount;
-    container.appendChild(amount);
+    appendProductProperty("Amount: ", "productAmount", detailedProduct.amount);
 
     createdProducts.set(id, container);
 
     itemsInfo.appendChild(container);
+
+    function appendProductProperty(pText, propClass, propValue){
+        paragraph = createProductProperty("p", null, pText);
+        prop = createProductProperty("span", propClass, propValue);
+        paragraph.appendChild(prop);
+        container.appendChild(paragraph);
+    }
 }
 function displayProductAmount(id){
-    createdProducts.get(id).querySelector("p.productAmount").textContent = "Amount: " + detailedProducts.get(id).amount;
+    createdProducts.get(id).querySelector("span.productAmount").textContent = detailedProducts.get(id).amount;
 }
 
 function removeProductFromList(){
