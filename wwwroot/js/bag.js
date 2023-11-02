@@ -2,7 +2,9 @@
 
 let itemCount = 0;
 
-let product, isCreated = false;
+let product;
+
+document.getElementById("mainSell").addEventListener("click", showSellingWindow);
 
 document.addEventListener("DOMContentLoaded", function(){
     const sellingButtons = document.querySelectorAll(".sellingBtn");
@@ -58,7 +60,9 @@ function createProductProperty(element, className, text){
     if(className !== null){
         property.classList.add(className);
     }
-    property.textContent = text;
+    if(text !== null){
+        property.textContent = text;
+    }
     return property;
 }
 
@@ -68,8 +72,8 @@ function createProduct(id){
     let detailedProduct = detailedProducts.get(id);
 
     let container = document.createElement("div");
-    container.classList.add("productContainer");
     container.id = "product_" + id;
+    container.classList.add("productContainer");
 
     appendProductProperty("Name: ", "productName", detailedProduct.name);
     
@@ -81,6 +85,11 @@ function createProduct(id){
 
     appendProductProperty("Amount: ", "productAmount", detailedProduct.amount);
 
+    let removeIcon = createProductProperty("span", "removeFromBagIcon", "delete");
+    removeIcon.classList.add("material-symbols-outlined");
+    removeIcon.addEventListener("click", removeItemHandler);
+    container.appendChild(removeIcon);
+
     createdProducts.set(id, container);
 
     itemsInfo.appendChild(container);
@@ -91,13 +100,16 @@ function createProduct(id){
         paragraph.appendChild(prop);
         container.appendChild(paragraph);
     }
+
+    function removeItemHandler(event){
+        let itemContainer = event.target.parentNode;
+        event.target.removeEventListener("click", removeItemHandler);
+        createdProducts.delete(itemContainer.id);
+        itemContainer.parentNode.remove();
+    }
 }
 function displayProductAmount(id){
     createdProducts.get(id).querySelector("span.productAmount").textContent = detailedProducts.get(id).amount;
-}
-
-function removeProductFromList(){
-
 }
 
 const bagBtn = document.getElementById("bag");
@@ -135,3 +147,28 @@ function hideProductsDesc(){
     productsDesc.style.display = "none";
     itemsInfo.style.display = "none";
 }
+
+const modalContainer = document.getElementById("modalContainer");
+const cacheOfProducts = new Map();
+let prod, oldAmount, newAmount;
+function showSellingWindow(){
+    modalContainer.style.display = "block";
+    createdProducts.forEach(function(value, key){
+        if(cacheOfProducts.has(key)){
+            prod = cacheOfProducts.get(key);
+            newAmount = value.querySelector("productAmount");
+            oldAmount = prod.value.querySelector("productAmount");
+            if(newAmount !== oldAmount){
+                oldAmount.textContent = newAmount;
+                prod.value.isCreated = false;
+            }
+        }
+        else{
+            cacheOfProducts.set(key, { isCreated: false, value });
+        }
+    });
+}
+
+document.getElementById("modalCancelIcon").addEventListener("click", function(){
+    modalContainer.style.display = "none";
+});
