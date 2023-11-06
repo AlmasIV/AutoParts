@@ -4,8 +4,6 @@ let itemCount = 0;
 
 let product;
 
-document.getElementById("mainSell").addEventListener("click", showSellingWindow);
-
 document.addEventListener("DOMContentLoaded", function(){
     const sellingButtons = document.querySelectorAll(".sellingBtn");
     let productId;
@@ -17,6 +15,9 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 });
 
+const mainSellBtn = document.getElementById("mainSell");
+mainSellBtn.addEventListener("click", showSummaryWindow);
+
 function addToBag(id){
     itemCount ++;
     updateProductCount(id);
@@ -26,34 +27,42 @@ const productCount = document.getElementById("bagCount");
 const productsDesc = document.getElementById("productsDesc");
 const itemsInfo = document.getElementById("itemsInfo");
 
+// Holds pure data about products.
 const detailedProducts = new Map();
+
+// Holds HTML elements (e.g. selected products).
+const createdProducts = new Map();
+
+// Used in last summary modal window.
+const cacheOfFinalProducts = new Map();
 
 function updateProductCount(id){
     productCount.textContent = itemCount;
     if(itemCount > 0){
         productsDesc.textContent = "Selling " + itemCount + " items in total.";
-
-        if(!detailedProducts.has(id)){
-            let tr, name, applicability, company, price;
-            tr = document.querySelector(`main#autoPartsTable table tr[data-item-id="${id}"]`);
-            name = tr.querySelector("td[headers='name']").textContent;
-            applicability = tr.querySelector("td[headers='applicability']").textContent;
-            company = tr.querySelector("td[headers='company']").textContent;
-            price = tr.querySelector("td[headers='priceInTenge']").textContent;
-            detailedProducts.set(id, { name, applicability, company, price, amount: 1 });
-            createProduct(id);
-        }
-        else{
-            detailedProducts.get(id).amount ++;
-            displayProductAmount(id);
+        mainSellBtn.disabled = false;
+        if(id !== null){
+            if(!detailedProducts.has(id)){
+                let tr, name, applicability, company, price;
+                tr = document.querySelector(`main#autoPartsTable table tr[data-item-id="${id}"]`);
+                name = tr.querySelector("td[headers='name']").textContent;
+                applicability = tr.querySelector("td[headers='applicability']").textContent;
+                company = tr.querySelector("td[headers='company']").textContent;
+                price = tr.querySelector("td[headers='priceInTenge']").textContent;
+                detailedProducts.set(id, { name, applicability, company, price, amount: 1 });
+                createProduct(id);
+            }
+            else{
+                detailedProducts.get(id).amount ++;
+                createdProducts.get(id).querySelector("span.productAmount").textContent = detailedProducts.get(id).amount;
+            }
         }
     }
     else{
+        mainSellBtn.disabled = true;
         productsDesc.textContent = "You have no products here.";
     }
 }
-
-const createdProducts = new Map();
 
 function createProductProperty(element, className, text){
     let property = document.createElement(element);
@@ -67,49 +76,61 @@ function createProductProperty(element, className, text){
 }
 
 function createProduct(id){
-    let paragraph, prop;
+    let paragraph, removeIcon, container, detailedProduct;
 
-    let detailedProduct = detailedProducts.get(id);
+    detailedProduct = detailedProducts.get(id);
 
-    let container = document.createElement("div");
-    container.id = "product_" + id;
-    container.classList.add("productContainer");
+    container = createProductProperty("div", "productContainer", null);
+    container.id = id + "bugProduct";
 
-    appendProductProperty("Name: ", "productName", detailedProduct.name);
+    paragraph = createParagraph("Name: ", "productName", detailedProduct.name);
+    container.appendChild(paragraph);
     
-    appendProductProperty("Applicability: ", "productApplicability", detailedProduct.applicability);
+    paragraph = createParagraph("Applicability: ", "productApplicability", detailedProduct.applicability);
+    container.appendChild(paragraph);
     
-    appendProductProperty("Company: ", "productCompany", detailedProduct.company);
+    paragraph = createParagraph("Company: ", "productCompany", detailedProduct.company);
+    container.appendChild(paragraph);
 
-    appendProductProperty("Price: ", "productPrice", detailedProduct.price);
+    paragraph = createParagraph("Price: ", "productPrice", detailedProduct.price);
+    container.appendChild(paragraph);
 
-    appendProductProperty("Amount: ", "productAmount", detailedProduct.amount);
+    paragraph = createParagraph("Amount: ", "productAmount", detailedProduct.amount);
+    container.appendChild(paragraph);
 
-    let removeIcon = createProductProperty("span", "removeFromBagIcon", "delete");
-    removeIcon.classList.add("material-symbols-outlined");
-    removeIcon.addEventListener("click", removeItemHandler);
+    removeIcon = createDeletionIcon();
     container.appendChild(removeIcon);
 
     createdProducts.set(id, container);
 
     itemsInfo.appendChild(container);
+}
 
-    function appendProductProperty(pText, propClass, propValue){
-        paragraph = createProductProperty("p", null, pText);
-        prop = createProductProperty("span", propClass, propValue);
-        paragraph.appendChild(prop);
-        container.appendChild(paragraph);
-    }
+function createParagraph(pText, propClass, propValue){
+    let paragraph = createProductProperty("p", null, pText);
+    let prop = createProductProperty("span", propClass, propValue);
+    paragraph.appendChild(prop);
+    return paragraph;
+    
+}
+
+function createDeletionIcon(){
+    let removeIcon = createProductProperty("span", "removeFromBagIcon", "delete");
+    removeIcon.classList.add("material-symbols-outlined");
+    removeIcon.addEventListener("click", removeItemHandler);
+
+    return removeIcon;
 
     function removeItemHandler(event){
         let itemContainer = event.target.parentNode;
+        let itemId = parseInt(itemContainer.id).toString();
         event.target.removeEventListener("click", removeItemHandler);
-        createdProducts.delete(itemContainer.id);
-        itemContainer.parentNode.remove();
+        itemCount = itemCount - detailedProducts.get(itemId).amount;
+        createdProducts.delete(itemId);
+        detailedProducts.delete(itemId);
+        itemContainer.remove();
+        updateProductCount(null);
     }
-}
-function displayProductAmount(id){
-    createdProducts.get(id).querySelector("span.productAmount").textContent = detailedProducts.get(id).amount;
 }
 
 const bagBtn = document.getElementById("bag");
@@ -149,24 +170,13 @@ function hideProductsDesc(){
 }
 
 const modalContainer = document.getElementById("modalContainer");
-const cacheOfProducts = new Map();
+
 let prod, oldAmount, newAmount;
-function showSellingWindow(){
+function showSummaryWindow(){
     modalContainer.style.display = "block";
-    createdProducts.forEach(function(value, key){
-        if(cacheOfProducts.has(key)){
-            prod = cacheOfProducts.get(key);
-            newAmount = value.querySelector("productAmount");
-            oldAmount = prod.value.querySelector("productAmount");
-            if(newAmount !== oldAmount){
-                oldAmount.textContent = newAmount;
-                prod.value.isCreated = false;
-            }
-        }
-        else{
-            cacheOfProducts.set(key, { isCreated: false, value });
-        }
-    });
+    let cachedProduct, finalProduct;
+    let tempKey, tempValue;
+    
 }
 
 document.getElementById("modalCancelIcon").addEventListener("click", function(){

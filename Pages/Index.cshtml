@@ -53,7 +53,7 @@
                 <td headers="@identifiers[4]">@item.PriceInRubles</td>
                 <td headers="@identifiers[5]">@item.PriceInTenge</td>
                 <td header="@identifiers[6]">@item.Amount</td>
-                <td data-product-id="@item.Id" headers="@identifiers[7]" class="btnCell sellingBtn" role="button" tabindex=0>
+                <td data-product-id="@item.Id" headers="@identifiers[7]" class="btnCell sellingBtn pointer" role="button" tabindex=0>
                     Sell
                 </td>
             </tr>
@@ -72,9 +72,9 @@
 <div id="bagWrapper">
     <div id="itemsInfo">
         <p id="productsDesc">You have no products here.</p>
-        <button id="mainSell">Proceed to sell</button>
+        <button id="mainSell" class="pointer" disabled title="You have no items to sell.">Proceed to sell</button>
     </div>
-    <div id="bag">
+    <div id="bag" class="pointer">
         <p>Selected Items <span id="bagCount">0</span></p>
     </div>
 </div>

@@ -12,6 +12,9 @@ main {
     width: 70vw;
     margin: auto;
 }
+.pointer{
+    cursor: pointer;
+}
 .input-container label, input, .error-message {
     display: block;
     width: 100%;
@@ -64,27 +67,26 @@ td, th {
 tr:nth-child(even){
     background-color: rgb(206, 206, 206);
 }
-td.btnCell {
+td.btnCell{
     background-color: rgb(188, 255, 188);
     font-size: 1.4rem;
     transition: 0.5s;
 }
-td.btnCell:hover {
+td.btnCell:hover{
     font-size: 1.4rem;
     background-color: rgb(0, 255, 0);
     font-weight: bolder;
-    cursor: pointer;
 }
 
 /*Product bag styles.*/
-#bagWrapper {
+#bagWrapper{
     position: fixed;
     bottom: 0.5vh;
     right: 0.5vw;
     font-size: 1.2rem;
     text-align: center;
 }
-#productsDesc {
+#productsDesc{
     display: none;
     padding: 1vh;
     max-height: 65vh;
@@ -92,25 +94,24 @@ td.btnCell:hover {
     background-color: rgb(116, 116, 116);
     color: white;
 }
-#bag {
+#bag{
     width: 15vw;
     height: 5vh;
     background-color: black;
     line-height: 5vh;
     box-sizing: border-box;
     transition: all 0.5s;
-    cursor: pointer;
 }
-#bag p {
+#bag p{
     color: white;
     font-size: 1.5rem;
 }
-#bag:hover, #bag.activeBag {
+#bag:hover, #bag.activeBag{
     height: 7vh;
     line-height: 7vh;
     width: 20vw;
 }
-#bag:active {
+#bag:active{
     background-color: purple;
     transition: 0s;
 }
@@ -152,7 +153,11 @@ td.btnCell:hover {
     color: white;
     transition: 0.5s;
 }
-#mainSell:hover{
+#mainSell:disabled{
+    background-color: rgb(77, 77, 77);
+    cursor: not-allowed;
+}
+#mainSell:hover:not(:disabled){
     margin-top: 1vh;
     border-radius: 2.5vh;
     color: rgb(0, 255, 0);
@@ -206,6 +211,7 @@ td.btnCell:hover {
     bottom: 0.2vh;
     right: 0.2vh;
     transition: 0.5s;
+    cursor: pointer;
 }
 .removeFromBagIcon:hover{
     color: red;
