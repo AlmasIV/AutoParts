@@ -52,7 +52,7 @@
                 <td headers="@identifiers[3]">@(item.Company == null ? "Unknown" : item.Company)</td>
                 <td headers="@identifiers[4]">@item.PriceInRubles</td>
                 <td headers="@identifiers[5]">@item.PriceInTenge</td>
-                <td header="@identifiers[6]">@item.Amount</td>
+                <td headers="@identifiers[6]">@item.Amount</td>
                 <td data-product-id="@item.Id" headers="@identifiers[7]" class="btnCell sellingBtn pointer" role="button" tabindex=0>
                     Sell
                 </td>
@@ -66,6 +66,9 @@
             <span id="modalCancelIcon" class="cancelIcon material-symbols-outlined" title="Cancel">
             cancel
             </span>
+        </div>
+        <div id="modalBtnWrapper">
+            <button class="primaryBtn finalSell">Sell</button>
         </div>
     </div>
 </div>

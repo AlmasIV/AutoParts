@@ -5,14 +5,31 @@ let itemCount = 0;
 let product;
 
 document.addEventListener("DOMContentLoaded", function(){
-    const sellingButtons = document.querySelectorAll(".sellingBtn");
-    let productId;
-    sellingButtons.forEach(button => {
-        button.addEventListener("click", function(){
-            productId = button.getAttribute("data-product-id");
-            addToBag(productId);
-        });
+    const items = document.querySelectorAll("#autoPartsTable table tr:not(:first-child)");
+    let amount, button, itemId, amountTd;
+    items.forEach(row => {
+        amountTd = row.querySelector("[headers='amount']");
+        amount = amountTd.innerText;
+        if(amount > 0){
+            button = row.querySelector(".sellingBtn");
+            button.addEventListener("click", function(){
+                itemId = this.getAttribute("data-product-id");
+                addToBag(itemId);
+            });
+        }
+        else{
+            row.setAttribute("disabled", "disabled");
+            amountTd.style.color = "red";
+        }
     });
+    // const sellingButtons = document.querySelectorAll(".sellingBtn");
+    // let productId;
+    // sellingButtons.forEach(button => {
+    //     button.addEventListener("click", function(){
+    //         productId = button.getAttribute("data-product-id");
+    //         addToBag(productId);
+    //     });
+    // });
 });
 
 const mainSellBtn = document.getElementById("mainSell");
@@ -76,12 +93,25 @@ function createProductProperty(element, className, text){
 }
 
 function createProduct(id){
-    let paragraph, removeIcon, container, detailedProduct;
+    let removeIcon, container, detailedProduct;
 
     detailedProduct = detailedProducts.get(id);
 
     container = createProductProperty("div", "productContainer", null);
     container.id = id + "bugProduct";
+
+    fillContainer(container, detailedProduct);
+
+    removeIcon = createDeletionIcon();
+    container.appendChild(removeIcon);
+
+    createdProducts.set(id, container);
+
+    itemsInfo.appendChild(container);
+}
+
+function fillContainer(container, detailedProduct){
+    let paragraph;
 
     paragraph = createParagraph("Name: ", "productName", detailedProduct.name);
     container.appendChild(paragraph);
@@ -97,13 +127,6 @@ function createProduct(id){
 
     paragraph = createParagraph("Amount: ", "productAmount", detailedProduct.amount);
     container.appendChild(paragraph);
-
-    removeIcon = createDeletionIcon();
-    container.appendChild(removeIcon);
-
-    createdProducts.set(id, container);
-
-    itemsInfo.appendChild(container);
 }
 
 function createParagraph(pText, propClass, propValue){
@@ -111,13 +134,13 @@ function createParagraph(pText, propClass, propValue){
     let prop = createProductProperty("span", propClass, propValue);
     paragraph.appendChild(prop);
     return paragraph;
-    
 }
 
 function createDeletionIcon(){
     let removeIcon = createProductProperty("span", "removeFromBagIcon", "delete");
     removeIcon.classList.add("material-symbols-outlined");
     removeIcon.addEventListener("click", removeItemHandler);
+    removeIcon.setAttribute("title", "Remove Item")
 
     return removeIcon;
 
@@ -126,10 +149,20 @@ function createDeletionIcon(){
         let itemId = parseInt(itemContainer.id).toString();
         event.target.removeEventListener("click", removeItemHandler);
         itemCount = itemCount - detailedProducts.get(itemId).amount;
-        createdProducts.delete(itemId);
-        detailedProducts.delete(itemId);
+        removeProduct(itemId);
+        cacheOfFinalProducts.delete(itemId);
         itemContainer.remove();
         updateProductCount(null);
+    }
+}
+
+function removeProduct(id){
+    createdProducts.delete(id);
+    detailedProducts.delete(id);
+    let cachedProduct = cacheOfFinalProducts.get(id);
+    if(cachedProduct){
+        cachedProduct.value.remove();
+        cacheOfFinalProducts.delete(id);
     }
 }
 
@@ -170,13 +203,32 @@ function hideProductsDesc(){
 }
 
 const modalContainer = document.getElementById("modalContainer");
+const modalWindow = modalContainer.firstElementChild;
 
-let prod, oldAmount, newAmount;
 function showSummaryWindow(){
     modalContainer.style.display = "block";
-    let cachedProduct, finalProduct;
-    let tempKey, tempValue;
-    
+    let cachedProduct, container, paragraph;
+    detailedProducts.forEach(function(value, id){
+        cachedProduct = cacheOfFinalProducts.get(id);
+        if(cachedProduct){
+            cachedProduct = cachedProduct.value;
+            if(cachedProduct.amount !== value.amount){
+                cachedProduct.amount = value.amount;
+            }
+        }
+        else{
+            cacheOfFinalProducts.set(id, { isCreated: false, value });
+        }
+    });
+    cacheOfFinalProducts.forEach(function(value, id){
+        if(value.isCreated !== true){
+            container = createProductProperty("div", "finalProduct", null);
+            paragraph = fillContainer(container, detailedProducts.get(id));
+            value.isCreated = true;
+            value.value = container;
+            modalWindow.appendChild(container);
+        }
+    });
 }
 
 document.getElementById("modalCancelIcon").addEventListener("click", function(){
