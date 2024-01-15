@@ -1,6 +1,8 @@
 ﻿@page
 @using AutoParts.Model
 
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
 @model IndexModel
 @{
     ViewData["Title"] = "My Collection";
@@ -14,7 +16,10 @@
         "amount",
         "sell"
     };
+
+    var requestToken = Antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
 }
+<input id="RequestVerificationToken" type="hidden" value="@requestToken" />
 <main id="autoPartsTable">
     <table>
         <tr>

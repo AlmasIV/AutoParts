@@ -22,14 +22,6 @@ document.addEventListener("DOMContentLoaded", function(){
             amountTd.style.color = "red";
         }
     });
-    // const sellingButtons = document.querySelectorAll(".sellingBtn");
-    // let productId;
-    // sellingButtons.forEach(button => {
-    //     button.addEventListener("click", function(){
-    //         productId = button.getAttribute("data-product-id");
-    //         addToBag(productId);
-    //     });
-    // });
 });
 
 const mainSellBtn = document.getElementById("mainSell");
@@ -234,3 +226,25 @@ function showSummaryWindow(){
 document.getElementById("modalCancelIcon").addEventListener("click", function(){
     modalContainer.style.display = "none";
 });
+
+const finalSellBtn = document.getElementById("modalBtnWrapper").querySelector("button");
+finalSellBtn.addEventListener("click", makeSellingRequest);
+
+function convertItemsToJSON(){
+    const collectionOfItems = {};
+    detailedProducts.forEach((value, key) => {
+        collectionOfItems[key] = value;
+    });
+    return JSON.stringify(collectionOfItems);
+}
+
+async function makeSellingRequest(){
+    const response = await fetch("/", {
+        method: "POST",
+        body: convertItemsToJSON(),
+        headers: {
+            "Content-Type": "application/json",
+            "RequestVerificationToken": document.getElementById("RequestVerificationToken").value
+        }
+    });
+}

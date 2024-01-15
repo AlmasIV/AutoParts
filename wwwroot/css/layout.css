@@ -79,6 +79,7 @@ tr:not([disabled]) td.btnCell:hover{
 }
 tr[disabled] td.btnCell{
     background-color: rgb(120, 205, 120);
+    cursor: not-allowed;
 }
 /*Product bag styles.*/
 #bagWrapper{

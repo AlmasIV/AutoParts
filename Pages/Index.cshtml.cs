@@ -14,11 +14,13 @@ public class IndexModel : PageModel
     public List<string> JsonAutoParts { get; set; } = new List<string>();
     public IndexModel(DatabaseAcess databaseAcess)
     {
+        Console.WriteLine("The constructor was called!");
         _databaseAccess = databaseAcess;
     }
 
     public IActionResult OnGet()
     {
+        Console.WriteLine("OnGet is called!");
         (bool isSuccess, List<AutoPart>? autoParts) outputs = _databaseAccess.RetrieveAll();
         if(outputs.isSuccess){
             AutoParts = outputs.autoParts;
@@ -28,5 +30,10 @@ public class IndexModel : PageModel
             return Page();
         }
         return File("~/html/ErrorPages/serverError.html", "text/html");
+    }
+    [HttpPost]
+    public IActionResult OnPost([FromBody]string jsonMessage){
+        Console.WriteLine("OnPost is called!");
+        return new OkResult();
     }
 }
