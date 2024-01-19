@@ -14,13 +14,11 @@ public class IndexModel : PageModel
     public List<string> JsonAutoParts { get; set; } = new List<string>();
     public IndexModel(DatabaseAcess databaseAcess)
     {
-        Console.WriteLine("The constructor was called!");
         _databaseAccess = databaseAcess;
     }
 
     public IActionResult OnGet()
     {
-        Console.WriteLine("OnGet is called!");
         (bool isSuccess, List<AutoPart>? autoParts) outputs = _databaseAccess.RetrieveAll();
         if(outputs.isSuccess){
             AutoParts = outputs.autoParts;
@@ -32,8 +30,16 @@ public class IndexModel : PageModel
         return File("~/html/ErrorPages/serverError.html", "text/html");
     }
     [HttpPost]
-    public IActionResult OnPost([FromBody]string jsonMessage){
-        Console.WriteLine("OnPost is called!");
+    public IActionResult OnPost([FromBody]AutoPart[] autoParts){
+        if(!ModelState.IsValid){
+            return new BadRequestResult();
+        }
+        List<AutoPart>? genuineData = _databaseAccess.RetrieveByIds(autoParts.Select(x => x.Id));
+        if(genuineData is null){
+            return new ObjectResult(new {errorMessage = "The requested data doesn't correspond to the original one. Try to reload the page."}){
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+        }
         return new OkResult();
     }
 }

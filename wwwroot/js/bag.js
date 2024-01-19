@@ -52,13 +52,14 @@ function updateProductCount(id){
         mainSellBtn.disabled = false;
         if(id !== null){
             if(!detailedProducts.has(id)){
-                let tr, name, applicability, company, price;
+                let tr, name, applicability, company, price, priceInRubles;
                 tr = document.querySelector(`main#autoPartsTable table tr[data-item-id="${id}"]`);
                 name = tr.querySelector("td[headers='name']").textContent;
                 applicability = tr.querySelector("td[headers='applicability']").textContent;
                 company = tr.querySelector("td[headers='company']").textContent;
                 price = tr.querySelector("td[headers='priceInTenge']").textContent;
-                detailedProducts.set(id, { name, applicability, company, price, amount: 1 });
+                priceInRubles = tr.querySelector("td[headers='priceInRubles']").textContent;
+                detailedProducts.set(id, { name, applicability, company, price, priceInRubles, amount: 1 });
                 createProduct(id);
             }
             else{
@@ -231,20 +232,44 @@ const finalSellBtn = document.getElementById("modalBtnWrapper").querySelector("b
 finalSellBtn.addEventListener("click", makeSellingRequest);
 
 function convertItemsToJSON(){
-    const collectionOfItems = {};
+    const collectionOfItems = [];
+    
     detailedProducts.forEach((value, key) => {
-        collectionOfItems[key] = value;
+        const singleItem = {
+            id: key,
+            name: value.name,
+            applicability: value.applicability,
+            company: value.company === "Unknown" ? null : value.company,
+            priceInTenge: value.price,
+            priceInRubles: value.priceInRubles,
+            amount: value.amount
+        };
+        collectionOfItems.push(singleItem);
     });
     return JSON.stringify(collectionOfItems);
 }
 
 async function makeSellingRequest(){
-    const response = await fetch("/", {
-        method: "POST",
-        body: convertItemsToJSON(),
-        headers: {
-            "Content-Type": "application/json",
-            "RequestVerificationToken": document.getElementById("RequestVerificationToken").value
+    console.log(convertItemsToJSON());
+    try{
+        const response = await fetch("/", {
+            method: "POST",
+            body: convertItemsToJSON(),
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": document.getElementById("RequestVerificationToken").value
+            }
+        });
+        if(!response.ok){
+            console.log("Something went wrong!");
         }
-    });
+        else{
+            console.log("Everything is okk.");
+            const responseData = await response.json();
+            console.log(responseData);
+        }
+    }
+    catch(error){
+        console.log("An error occurred! " + error.message);
+    }
 }

@@ -45,21 +45,18 @@ public class DatabaseAcess{
                     connection.Open();
 
                     using(SqlDataReader reader = command.ExecuteReader()){
-
-                        if(reader is not null){
-                            autoParts = new List<AutoPart>();
-                            while(reader.Read()){
-                                autoParts.Add(new AutoPart()
-                                {
-                                    Id = reader.GetInt32(0), 
-                                    Name = reader.GetString(1), 
-                                    Applicability = reader.GetString(2), 
-                                    Company = reader.IsDBNull(3) ? null : reader.GetString(3), 
-                                    PriceInRubles = reader.GetDecimal(4), 
-                                    PriceInTenge = reader.GetDecimal(5), 
-                                    Amount = reader.GetInt16(6) 
-                                });
-                            }
+                        autoParts = new List<AutoPart>();
+                        while(reader.Read()){
+                            autoParts.Add(new AutoPart()
+                            {
+                                Id = reader.GetInt32(0), 
+                                Name = reader.GetString(1), 
+                                Applicability = reader.GetString(2), 
+                                Company = reader.IsDBNull(3) ? null : reader.GetString(3), 
+                                PriceInRubles = reader.GetDecimal(4), 
+                                PriceInTenge = reader.GetDecimal(5), 
+                                Amount = reader.GetInt16(6) 
+                            });
                         }
                     }
                     return (autoParts != null, autoParts);
@@ -67,6 +64,47 @@ public class DatabaseAcess{
                 catch {
                     return (false, null);
                 }
+            }
+        }
+    }
+    public List<AutoPart>? RetrieveByIds(IEnumerable<int> ids){
+        using(SqlConnection connection = new SqlConnection(_connectionString)){
+            try{
+                connection.Open();
+                using(SqlCommand command = new SqlCommand("USE AutoPartsDB;", connection)){
+                    command.ExecuteNonQuery();
+                }
+                using(SqlCommand command = new SqlCommand()){
+                    command.Connection = connection;
+                    string commandText = "SELECT * FROM AutoParts WHERE Id IN ";
+                    for(int i = 0, n = ids.Count(); i < n; i ++){
+                        if(i == n - 1){
+                            commandText += i + ");";
+                        }
+                        else{
+                            commandText += i + ", ";
+                        }
+                    }
+                    command.CommandText = commandText;
+                    using(SqlDataReader reader = command.ExecuteReader()){
+                        List<AutoPart> autoParts = new List<AutoPart>();
+                        while(reader.Read()){
+                            autoParts.Add(new AutoPart(){
+                                Id = reader.GetInt32(0), 
+                                Name = reader.GetString(1), 
+                                Applicability = reader.GetString(2), 
+                                Company = reader.IsDBNull(3) ? null : reader.GetString(3), 
+                                PriceInRubles = reader.GetDecimal(4), 
+                                PriceInTenge = reader.GetDecimal(5), 
+                                Amount = reader.GetInt16(6) 
+                            });
+                        }
+                        return autoParts;
+                    }
+                }
+            }
+            catch{
+                return null;
             }
         }
     }
