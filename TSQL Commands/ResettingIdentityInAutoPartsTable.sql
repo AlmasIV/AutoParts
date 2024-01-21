@@ -1,3 +1,0 @@
-USE AutoPartsDB;
-GO
-DBCC CHECKIDENT ('AutoParts', RESEED, 0);

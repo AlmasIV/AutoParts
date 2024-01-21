@@ -35,7 +35,4 @@ public class AutoPart{
     [Range(0, short.MaxValue)]
     [JsonPropertyName("amount")]
     public short Amount { get; set; }
-
-    [JsonIgnore]
-    public List<IFormFile>? Images { get; set; }
 }

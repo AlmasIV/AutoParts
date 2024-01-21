@@ -262,6 +262,8 @@ async function makeSellingRequest(){
         });
         if(!response.ok){
             console.log("Something went wrong!");
+            const errorMessage = await response.json();
+            console.log(errorMessage);
         }
         else{
             console.log("Everything is okk.");
