@@ -1,45 +1,74 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using AutoParts.Model;
-using System.Text.Json;
+using AutoParts.Models;
 
 namespace AutoParts.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly DatabaseAcess _databaseAccess;
+    private readonly AppDbContext _dbContext;
     [BindNever]
     public List<AutoPart>? AutoParts { get; set; } = null;
-    public List<string> JsonAutoParts { get; set; } = new List<string>();
-    public IndexModel(DatabaseAcess databaseAcess)
+    public IndexModel(AppDbContext dbContext)
     {
-        _databaseAccess = databaseAcess;
+        _dbContext = dbContext;
     }
 
     public IActionResult OnGet()
     {
-        (bool isSuccess, List<AutoPart>? autoParts) outputs = _databaseAccess.RetrieveAll();
-        if(outputs.isSuccess){
-            AutoParts = outputs.autoParts;
-            foreach(AutoPart autoPart in AutoParts){
-                JsonAutoParts.Add(JsonSerializer.Serialize(autoPart));
-            }
+        try{
+            AutoParts = _dbContext.AutoParts.ToList();
             return Page();
         }
-        return File("~/html/ErrorPages/serverError.html", "text/html");
+        catch(Exception exception){
+            Console.WriteLine("An exception has occurred. " + exception.Message);
+            return File("~/html/ErrorPages/serverError.html", "text/html");
+        }
     }
     [HttpPost]
-    public IActionResult OnPost([FromBody]AutoPart[] autoParts){
+    public IActionResult OnPost([FromBody]OrderSummary order){
         if(!ModelState.IsValid){
-            return new BadRequestResult();
+            return GetJsonResponse("Invalid request.", StatusCodes.Status400BadRequest);
         }
-        List<AutoPart>? genuineData = _databaseAccess.RetrieveByIds(autoParts.Select(x => x.Id));
-        if(genuineData is null){
-            return new ObjectResult(new {errorMessage = "The requested data doesn't correspond to the original one. Try to reload the page."}){
-                StatusCode = StatusCodes.Status400BadRequest
+        AutoPart[] orderedParts = order.OrderedParts;
+        AutoPart? temp = null;
+        decimal totalPrice = 0;
+        var originalData = _dbContext.AutoParts.Where(x => orderedParts.Select(x => x.Id).Contains(x.Id));
+        if(!originalData.Any() || orderedParts.Length != originalData.Count()){
+            return GetJsonResponse("Data not found.", StatusCodes.Status404NotFound);
+        }
+
+        foreach(AutoPart orderedPart in orderedParts){
+            if(originalData.Contains(orderedPart)){
+                temp = originalData.First(part => part.Id == orderedPart.Id);
+                if(temp.Amount < orderedPart.Amount){
+                    return GetJsonResponse($"The requested quantity for {orderedPart.Amount} for the '{orderedPart.Name} (ID: {orderedPart.Id})' exceeds current stock level ({temp.Amount}).", StatusCodes.Status409Conflict);
+                }
+                if(temp.Company == orderedPart.Company
+                    && temp.Applicability == orderedPart.Applicability
+                    && temp.Name == orderedPart.Name
+                    && temp.PriceInRubles == orderedPart.PriceInRubles
+                    && temp.PriceInTenge == orderedPart.PriceInTenge){
+                        totalPrice += orderedPart.Amount * temp.PriceInTenge;
+                        temp.Amount -= orderedPart.Amount;
+                }
+                else{
+                    return GetJsonResponse($"Inconsistency with the original data. (Requested Product: Name: '{orderedPart.Name}', ID: {orderedPart.Id}).", StatusCodes.Status409Conflict);
+                }
+            }
+            else{
+                return GetJsonResponse($"Request contains data that can't be found. (Name: '{orderedPart.Name}', ID: {orderedPart.Id}).", StatusCodes.Status404NotFound);
+            }
+        }
+        
+        _dbContext.SaveChanges();
+
+        JsonResult GetJsonResponse(string message, int code){
+            return new JsonResult(new { message = message }){
+                StatusCode = code
             };
         }
-        return new OkResult();
+        return GetJsonResponse("Changes successfully applied.", StatusCodes.Status200OK);
     }
 }

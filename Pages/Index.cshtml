@@ -1,5 +1,5 @@
 ﻿@page
-@using AutoParts.Model
+@using AutoParts.Models
 
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
@@ -78,11 +78,11 @@
     </div>
 </div>
 <div id="bagWrapper">
-    <div id="itemsInfo">
-        <p id="productsDesc">You have no products here.</p>
-        <button id="mainSell" class="pointer" disabled title="You have no items to sell.">Proceed to sell</button>
+    <div id="productInfo">
+        <p id="orderSummary">You have no products here.</p>
+        <button id="openOrder" class="pointer" disabled title="You have no items to sell.">Proceed to sell</button>
     </div>
     <div id="bag" class="pointer">
-        <p>Selected Items <span id="bagCount">0</span></p>
+        <p>Selected Items <span id="selectedItemsCount">0</span></p>
     </div>
 </div>

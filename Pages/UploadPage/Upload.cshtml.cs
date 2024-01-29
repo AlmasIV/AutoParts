@@ -2,24 +2,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
-using AutoParts.Model;
+using AutoParts.Models;
 
 namespace AutoParts.Pages;
 public class UploadModel : PageModel
 {
-    private readonly DatabaseAcess _databaseAccess;
+    private readonly AppDbContext _dbContext;
     [BindProperty]
     public AutoPart? AutoPart { get; set; }
-    public UploadModel(DatabaseAcess databaseAcess){
-        _databaseAccess = databaseAcess;
+    public UploadModel(AppDbContext dbContext){
+        _dbContext = dbContext;
     }
-    public void OnGet()
-    {
-        
-    }
+    public void OnGet(){}
     public IActionResult OnPost(){
         if(ModelState.IsValid){
-            bool isSuccess = _databaseAccess.InsertData(AutoPart!);
+            _dbContext.AutoParts.Add(AutoPart!);
+            _dbContext.SaveChanges();
             return RedirectToPage("../Index");
         }
         return Page();

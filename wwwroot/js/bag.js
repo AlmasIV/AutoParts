@@ -2,39 +2,63 @@
 
 let itemCount = 0;
 
-let product;
+// Holds amount value in the table.
+const visualAmount = new Map();
 
 document.addEventListener("DOMContentLoaded", function(){
     const items = document.querySelectorAll("#autoPartsTable table tr:not(:first-child)");
-    let amount, button, itemId, amountTd;
+    let amount, button, amountTd;
     items.forEach(row => {
         amountTd = row.querySelector("[headers='amount']");
         amount = amountTd.innerText;
         if(amount > 0){
             button = row.querySelector(".sellingBtn");
-            button.addEventListener("click", function(){
-                itemId = this.getAttribute("data-product-id");
-                addToBag(itemId);
-            });
+            visualAmount.set(row.getAttribute("data-item-id"), row);
+            button.addEventListener("click", selectProduct);
         }
         else{
-            row.setAttribute("disabled", "disabled");
-            amountTd.style.color = "red";
+            disableSelectButton(row);
         }
     });
 });
 
-const mainSellBtn = document.getElementById("mainSell");
-mainSellBtn.addEventListener("click", showSummaryWindow);
+function disableSelectButton(row){
+    row.querySelector("td[headers='amount']").style.color = "red";
+    const selectBtn = row.querySelector("td[headers='sell']");
+    selectBtn.setAttribute("disable", "disable");
+    selectBtn.removeEventListener("click", selectProduct);
+}
+
+function enableSelectButton(row){
+    row.querySelector("td[headers='amount']").style.color = "black";
+    row.querySelector("td[headers='sell']").removeAttribute("disable");
+    row.querySelector("td[headers='sell']").addEventListener("click", selectProduct);
+}
+
+function selectProduct(event){ 
+    let itemId = event.target.getAttribute("data-product-id");
+    addToBag(itemId);
+}
+
+const openOrderButton = document.getElementById("openOrder");
+openOrderButton.addEventListener("click", showSummaryWindow);
 
 function addToBag(id){
     itemCount ++;
+
+    // Removing 1 from the table, and adding that one to the Bag.
+    const amountTd = visualAmount.get(id).querySelector("td[headers='amount']");
+    let amount = amountTd.textContent - 1;
+    amountTd.textContent = amount;
+    if(amount === 0){
+        disableSelectButton(visualAmount.get(id));
+    }
     updateProductCount(id);
 }
 
-const productCount = document.getElementById("bagCount");
-const productsDesc = document.getElementById("productsDesc");
-const itemsInfo = document.getElementById("itemsInfo");
+const productCount = document.getElementById("selectedItemsCount");
+const orderSummary = document.getElementById("orderSummary");
+const productInfo = document.getElementById("productInfo");
 
 // Holds pure data about products.
 const detailedProducts = new Map();
@@ -48,8 +72,8 @@ const cacheOfFinalProducts = new Map();
 function updateProductCount(id){
     productCount.textContent = itemCount;
     if(itemCount > 0){
-        productsDesc.textContent = "Selling " + itemCount + " items in total.";
-        mainSellBtn.disabled = false;
+        orderSummary.textContent = "Selling " + itemCount + " items in total.";
+        openOrderButton.disabled = false;
         if(id !== null){
             if(!detailedProducts.has(id)){
                 let tr, name, applicability, company, price, priceInRubles;
@@ -69,28 +93,28 @@ function updateProductCount(id){
         }
     }
     else{
-        mainSellBtn.disabled = true;
-        productsDesc.textContent = "You have no products here.";
+        openOrderButton.disabled = true;
+        orderSummary.textContent = "You have no products here.";
     }
 }
 
-function createProductProperty(element, className, text){
-    let property = document.createElement(element);
+function createElement(element, className = null, text = null){
+    const _element = document.createElement(element);
     if(className !== null){
-        property.classList.add(className);
+        _element.classList.add(className);
     }
     if(text !== null){
-        property.textContent = text;
+        _element.textContent = text;
     }
-    return property;
+    return _element;
 }
-
+// I was stopped, here, keep improving bit by bit.
 function createProduct(id){
     let removeIcon, container, detailedProduct;
 
     detailedProduct = detailedProducts.get(id);
 
-    container = createProductProperty("div", "productContainer", null);
+    container = createElement("div", "productContainer", null);
     container.id = id + "bugProduct";
 
     fillContainer(container, detailedProduct);
@@ -100,7 +124,7 @@ function createProduct(id){
 
     createdProducts.set(id, container);
 
-    itemsInfo.appendChild(container);
+    productInfo.appendChild(container);
 }
 
 function fillContainer(container, detailedProduct){
@@ -123,14 +147,14 @@ function fillContainer(container, detailedProduct){
 }
 
 function createParagraph(pText, propClass, propValue){
-    let paragraph = createProductProperty("p", null, pText);
-    let prop = createProductProperty("span", propClass, propValue);
+    let paragraph = createElement("p", null, pText);
+    let prop = createElement("span", propClass, propValue);
     paragraph.appendChild(prop);
     return paragraph;
 }
 
 function createDeletionIcon(){
-    let removeIcon = createProductProperty("span", "removeFromBagIcon", "delete");
+    let removeIcon = createElement("span", "removeFromBagIcon", "delete");
     removeIcon.classList.add("material-symbols-outlined");
     removeIcon.addEventListener("click", removeItemHandler);
     removeIcon.setAttribute("title", "Remove Item")
@@ -146,11 +170,22 @@ function createDeletionIcon(){
         cacheOfFinalProducts.delete(itemId);
         itemContainer.remove();
         updateProductCount(null);
+        enableSelectButton(visualAmount.get(itemId));
     }
 }
 
 function removeProduct(id){
     createdProducts.delete(id);
+    const visualRow = visualAmount.get(id);
+    const amountCell = visualRow.querySelector("td[headers='amount']");
+    let amountNumber = Number(amountCell.textContent);
+    if(amountNumber === 0){
+        amountCell.style.color = "black";
+        visualRow.removeAttribute("disabled");
+        visualRow.querySelector("td[headers='sell']").addEventListener("click", selectProduct);
+    }
+    amountNumber += detailedProducts.get(id).amount;
+    amountCell.textContent = amountNumber;
     detailedProducts.delete(id);
     let cachedProduct = cacheOfFinalProducts.get(id);
     if(cachedProduct){
@@ -165,34 +200,34 @@ let isBagBtnActive = false;
 let timeOutId;
 
 bagBtn.addEventListener("mouseover", function(){
-    timeOutId = setTimeout(showProductsDesc, 500);
+    timeOutId = setTimeout(showOrderSummary, 500);
 });
 bagBtn.addEventListener("mouseout", function(){
     clearTimeout(timeOutId);
     if(!isBagBtnActive){
-        hideProductsDesc();
+        hideOrderSummary();
     }
 });
 bagBtn.addEventListener("click", function(){
     if(!isBagBtnActive){
-        showProductsDesc();
+        showOrderSummary();
         bagBtn.classList.add("activeBag");
         isBagBtnActive = true;
     }
     else{
-        hideProductsDesc();
+        hideOrderSummary();
         bagBtn.classList.remove("activeBag");
         isBagBtnActive = false;
     }
 });
 
-function showProductsDesc(){
-    productsDesc.style.display = "block";
-    itemsInfo.style.display = "block";
+function showOrderSummary(){
+    orderSummary.style.display = "block";
+    productInfo.style.display = "block";
 }
-function hideProductsDesc(){
-    productsDesc.style.display = "none";
-    itemsInfo.style.display = "none";
+function hideOrderSummary(){
+    orderSummary.style.display = "none";
+    productInfo.style.display = "none";
 }
 
 const modalContainer = document.getElementById("modalContainer");
@@ -215,7 +250,7 @@ function showSummaryWindow(){
     });
     cacheOfFinalProducts.forEach(function(value, id){
         if(value.isCreated !== true){
-            container = createProductProperty("div", "finalProduct", null);
+            container = createElement("div", "finalProduct", null);
             paragraph = fillContainer(container, detailedProducts.get(id));
             value.isCreated = true;
             value.value = container;
@@ -224,15 +259,18 @@ function showSummaryWindow(){
     });
 }
 
-document.getElementById("modalCancelIcon").addEventListener("click", function(){
+document.getElementById("modalCancelIcon").addEventListener("click", closeSummaryWindow);
+
+function closeSummaryWindow(){
     modalContainer.style.display = "none";
-});
+}
 
 const finalSellBtn = document.getElementById("modalBtnWrapper").querySelector("button");
 finalSellBtn.addEventListener("click", makeSellingRequest);
 
 function convertItemsToJSON(){
     const collectionOfItems = [];
+    let totalPrice = 0;
     
     detailedProducts.forEach((value, key) => {
         const singleItem = {
@@ -244,17 +282,19 @@ function convertItemsToJSON(){
             priceInRubles: value.priceInRubles,
             amount: value.amount
         };
+        totalPrice += singleItem.priceInTenge * singleItem.amount;
         collectionOfItems.push(singleItem);
     });
-    return JSON.stringify(collectionOfItems);
+    return JSON.stringify({ orderedParts: collectionOfItems, totalPrice});
 }
 
 async function makeSellingRequest(){
-    console.log(convertItemsToJSON());
+    const orderData = convertItemsToJSON();
+    console.log(orderData);
     try{
         const response = await fetch("/", {
             method: "POST",
-            body: convertItemsToJSON(),
+            body: orderData,
             headers: {
                 "Content-Type": "application/json",
                 "RequestVerificationToken": document.getElementById("RequestVerificationToken").value
@@ -266,12 +306,63 @@ async function makeSellingRequest(){
             console.log(errorMessage);
         }
         else{
-            console.log("Everything is okk.");
             const responseData = await response.json();
-            console.log(responseData);
+            //resetBag();
+            indicateFailure(responseData.message, response.status);
+            //indicateSuccess(responseData.message);
         }
     }
     catch(error){
         console.log("An error occurred! " + error.message);
     }
+}
+
+function resetBag(){
+    detailedProducts.clear();
+    cacheOfFinalProducts.clear();
+    createdProducts.forEach((value) => {
+        value.remove();
+    });
+    modalWindow.querySelectorAll(".finalProduct").forEach((value) => {
+        value.remove();
+    });
+    modalWindow.querySelectorAll("div").forEach((value) => {
+        value.style.display = "none";
+    });
+}
+function indicateSuccess(message){
+    let successMessage = modalWindow.querySelector("#successMessage");
+    if(!successMessage){
+        successMessage = document.createElement("p");
+        successMessage.textContent = message;
+        successMessage.id = "successMessage";
+        successMessage.classList.add("receipt");
+        modalWindow.appendChild(successMessage);
+    }
+    successMessage.style.display = "block";
+    modalWindow.style.animationPlayState = "running";
+    setTimeout(() => {
+        modalWindow.querySelector("p").remove();
+        modalWindow.style.animation = "0.2s ease-in-out paused indicateSuccess";
+        modalWindow.style.animationFillMode = "forwards";
+        modalWindow.querySelectorAll("div").forEach((value) => {
+            value.style.display = "block";
+        });
+        successMessage.style.display = "none";
+        itemCount = 0;
+        updateProductCount(null);
+        closeSummaryWindow();
+    }, 1500);
+}
+
+function indicateFailure(message, statusCode){
+    const errorBox = createElement("div", "finalProduct", null);
+    errorBox.style.backgroundColor = "red";
+    errorBox.style.color = "white";
+    const statusHeader = createElement("h2", null, statusCode);
+    statusHeader.style.textAlign = "center";
+    const errorMessage = createElement("p", null, message);
+    errorBox.appendChild(statusHeader);
+    errorBox.appendChild(errorMessage);
+    modalWindow.insertBefore(errorBox, document.getElementById("modalBtnWrapper"));
 }

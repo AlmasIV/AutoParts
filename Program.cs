@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace AutoParts;
 
 public class Program
@@ -8,15 +10,18 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
-        builder.Services.AddSingleton<DatabaseAcessString>();
-        builder.Services.AddScoped<DatabaseAcess>();
-
+        string connectionString = builder.Configuration.GetConnectionString("LocalConnectionString") ?? "";
+        builder.Services.AddDbContext<AppDbContext>(options => {
+            options.UseSqlServer(connectionString, options => {
+                options.EnableRetryOnFailure();
+            });
+        });
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
-            app.UseExceptionHandler("/Error");
+            app.UseExceptionHandler("/Error/{statusCode?}");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }

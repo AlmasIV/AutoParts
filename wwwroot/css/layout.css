@@ -67,17 +67,17 @@ td, th {
 tr:nth-child(even){
     background-color: rgb(206, 206, 206);
 }
-tr:not([disabled]) td.btnCell{
+td.btnCell:not([disable]){
     background-color: rgb(188, 255, 188);
     font-size: 1.4rem;
     transition: 0.5s;
 }
-tr:not([disabled]) td.btnCell:hover{
+td.btnCell:not([disable]):hover{
     font-size: 1.4rem;
     background-color: rgb(0, 255, 0);
     font-weight: bolder;
 }
-tr[disabled] td.btnCell{
+td.btnCell[disable]{
     background-color: rgb(120, 205, 120);
     cursor: not-allowed;
 }
@@ -89,7 +89,7 @@ tr[disabled] td.btnCell{
     font-size: 1.2rem;
     text-align: center;
 }
-#productsDesc{
+#orderSummary{
     display: none;
     padding: 1vh;
     max-height: 65vh;
@@ -123,7 +123,7 @@ tr[disabled] td.btnCell{
     max-width: 20vw;
 }
 
-#itemsInfo{
+#productInfo{
     max-height: 50vh;
     overflow-y: auto;
     max-width: 20vw;
@@ -144,7 +144,7 @@ tr[disabled] td.btnCell{
     padding: 0.5vh;
 }
 
-#mainSell{
+#openOrder{
     width: 100%;
     border: none;
     padding: 1.5vh;
@@ -155,11 +155,11 @@ tr[disabled] td.btnCell{
     color: white;
     transition: 0.5s;
 }
-#mainSell:disabled{
+#openOrder:disabled{
     background-color: rgb(77, 77, 77);
     cursor: not-allowed;
 }
-#mainSell:hover:not(:disabled){
+#openOrder:hover:not(:disabled){
     margin-top: 1vh;
     border-radius: 2.5vh;
     color: rgb(0, 255, 0);
@@ -190,6 +190,8 @@ tr[disabled] td.btnCell{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    animation: 0.2s ease-in-out paused indicateSuccess;
+    animation-fill-mode: forwards;
 }
 #modalHeader{
     height: 3.8vh;
@@ -248,4 +250,24 @@ tr[disabled] td.btnCell{
 .removeFromBagIcon:hover{
     color: red;
     font-size: 2rem;
+}
+
+/* Successfully purchase. */
+.receipt {
+    align-self: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+@keyframes indicateSuccess {
+    0% {
+        width: 50%;
+        height: 50%;
+    }
+    100% {
+        width: 25%;
+        height: 5vh;
+        background-color: violet;
+        border-radius: 2.5vh;
+    }
 }
