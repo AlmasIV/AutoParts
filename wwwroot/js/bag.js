@@ -35,6 +35,17 @@ function enableSelectButton(row){
     row.querySelector("td[headers='sell']").addEventListener("click", selectProduct);
 }
 
+function returnAmount(id){
+    const visualRow = visualAmount.get(id);
+    const amountCell = visualRow.querySelector("td[headers='amount']");
+    let amountNumber = Number(amountCell.textContent);
+    if(amountNumber === 0){
+        enableSelectButton(visualAmount.get(id));
+    }
+    amountNumber += detailedProducts.get(id).amount;
+    amountCell.textContent = amountNumber;
+}
+
 function selectProduct(event){ 
     let itemId = event.target.getAttribute("data-product-id");
     addToBag(itemId);
@@ -64,7 +75,7 @@ const productInfo = document.getElementById("productInfo");
 const detailedProducts = new Map();
 
 // Holds HTML elements (e.g. selected products).
-const createdProducts = new Map();
+const createdComponents = new Map();
 
 // Used in last summary modal window.
 const cacheOfFinalProducts = new Map();
@@ -84,11 +95,11 @@ function updateProductCount(id){
                 price = tr.querySelector("td[headers='priceInTenge']").textContent;
                 priceInRubles = tr.querySelector("td[headers='priceInRubles']").textContent;
                 detailedProducts.set(id, { name, applicability, company, price, priceInRubles, amount: 1 });
-                createProduct(id);
+                createComponent(id);
             }
             else{
                 detailedProducts.get(id).amount ++;
-                createdProducts.get(id).querySelector("span.productAmount").textContent = detailedProducts.get(id).amount;
+                createdComponents.get(id).querySelector("span.productAmount").textContent = detailedProducts.get(id).amount;
             }
         }
     }
@@ -108,8 +119,7 @@ function createElement(element, className = null, text = null){
     }
     return _element;
 }
-// I was stopped, here, keep improving bit by bit.
-function createProduct(id){
+function createComponent(id){
     let removeIcon, container, detailedProduct;
 
     detailedProduct = detailedProducts.get(id);
@@ -122,7 +132,7 @@ function createProduct(id){
     removeIcon = createDeletionIcon();
     container.appendChild(removeIcon);
 
-    createdProducts.set(id, container);
+    createdComponents.set(id, container);
 
     productInfo.appendChild(container);
 }
@@ -130,40 +140,44 @@ function createProduct(id){
 function fillContainer(container, detailedProduct){
     let paragraph;
 
-    paragraph = createParagraph("Name: ", "productName", detailedProduct.name);
+    paragraph = createDetailedParagraph("Name: ", "productName", detailedProduct.name);
     container.appendChild(paragraph);
     
-    paragraph = createParagraph("Applicability: ", "productApplicability", detailedProduct.applicability);
+    paragraph = createDetailedParagraph("Applicability: ", "productApplicability", detailedProduct.applicability);
     container.appendChild(paragraph);
     
-    paragraph = createParagraph("Company: ", "productCompany", detailedProduct.company);
+    paragraph = createDetailedParagraph("Company: ", "productCompany", detailedProduct.company);
     container.appendChild(paragraph);
 
-    paragraph = createParagraph("Price: ", "productPrice", detailedProduct.price);
+    paragraph = createDetailedParagraph("Price: ", "productPrice", detailedProduct.price);
     container.appendChild(paragraph);
 
-    paragraph = createParagraph("Amount: ", "productAmount", detailedProduct.amount);
+    paragraph = createDetailedParagraph("Amount: ", "productAmount", detailedProduct.amount);
     container.appendChild(paragraph);
 }
 
-function createParagraph(pText, propClass, propValue){
-    let paragraph = createElement("p", null, pText);
-    let prop = createElement("span", propClass, propValue);
+function createDetailedParagraph(pText, propClass, propValue){
+    const paragraph = createElement("p", null, pText);
+    const prop = createElement("span", propClass, propValue);
     paragraph.appendChild(prop);
     return paragraph;
 }
 
 function createDeletionIcon(){
-    let removeIcon = createElement("span", "removeFromBagIcon", "delete");
+    const removeIcon = createElement("span", "removeFromBagIcon", "delete");
     removeIcon.classList.add("material-symbols-outlined");
     removeIcon.addEventListener("click", removeItemHandler);
-    removeIcon.setAttribute("title", "Remove Item")
+    removeIcon.setAttribute("title", "Remove Item");
 
     return removeIcon;
 
     function removeItemHandler(event){
-        let itemContainer = event.target.parentNode;
-        let itemId = parseInt(itemContainer.id).toString();
+        const itemContainer = event.target.parentNode;
+
+        // itemContainer.id -> starts with a number, follows by string. Need to extract the starting number.
+        const itemId = parseInt(itemContainer.id).toString();
+
+
         event.target.removeEventListener("click", removeItemHandler);
         itemCount = itemCount - detailedProducts.get(itemId).amount;
         removeProduct(itemId);
@@ -175,17 +189,8 @@ function createDeletionIcon(){
 }
 
 function removeProduct(id){
-    createdProducts.delete(id);
-    const visualRow = visualAmount.get(id);
-    const amountCell = visualRow.querySelector("td[headers='amount']");
-    let amountNumber = Number(amountCell.textContent);
-    if(amountNumber === 0){
-        amountCell.style.color = "black";
-        visualRow.removeAttribute("disabled");
-        visualRow.querySelector("td[headers='sell']").addEventListener("click", selectProduct);
-    }
-    amountNumber += detailedProducts.get(id).amount;
-    amountCell.textContent = amountNumber;
+    createdComponents.delete(id);
+    returnAmount(id);
     detailedProducts.delete(id);
     let cachedProduct = cacheOfFinalProducts.get(id);
     if(cachedProduct){
@@ -259,7 +264,14 @@ function showSummaryWindow(){
     });
 }
 
-document.getElementById("modalCancelIcon").addEventListener("click", closeSummaryWindow);
+document.getElementById("modalCloseIcon").addEventListener("click", closeSummaryWindow);
+document.getElementById("modalClearIcon").addEventListener("click", () => {
+    cacheOfFinalProducts.forEach((value, key) => {
+        returnAmount(key);
+    });
+    resetBag();
+    indicateSuccess("Successfully cleared items.");
+});
 
 function closeSummaryWindow(){
     modalContainer.style.display = "none";
@@ -290,7 +302,6 @@ function convertItemsToJSON(){
 
 async function makeSellingRequest(){
     const orderData = convertItemsToJSON();
-    console.log(orderData);
     try{
         const response = await fetch("/", {
             method: "POST",
@@ -301,15 +312,13 @@ async function makeSellingRequest(){
             }
         });
         if(!response.ok){
-            console.log("Something went wrong!");
             const errorMessage = await response.json();
-            console.log(errorMessage);
+            indicateFailure(errorMessage.message, response.status);
         }
         else{
             const responseData = await response.json();
-            //resetBag();
-            indicateFailure(responseData.message, response.status);
-            //indicateSuccess(responseData.message);
+            resetBag();
+            indicateSuccess(responseData.message);
         }
     }
     catch(error){
@@ -320,7 +329,7 @@ async function makeSellingRequest(){
 function resetBag(){
     detailedProducts.clear();
     cacheOfFinalProducts.clear();
-    createdProducts.forEach((value) => {
+    createdComponents.forEach((value) => {
         value.remove();
     });
     modalWindow.querySelectorAll(".finalProduct").forEach((value) => {
@@ -346,7 +355,12 @@ function indicateSuccess(message){
         modalWindow.style.animation = "0.2s ease-in-out paused indicateSuccess";
         modalWindow.style.animationFillMode = "forwards";
         modalWindow.querySelectorAll("div").forEach((value) => {
-            value.style.display = "block";
+            if(value.id === "modalHeader"){
+                value.style.display = "flex";
+            }
+            else{
+                value.style.display = "block";
+            }
         });
         successMessage.style.display = "none";
         itemCount = 0;
@@ -359,10 +373,13 @@ function indicateFailure(message, statusCode){
     const errorBox = createElement("div", "finalProduct", null);
     errorBox.style.backgroundColor = "red";
     errorBox.style.color = "white";
+    errorBox.style.textAlign = "center";
     const statusHeader = createElement("h2", null, statusCode);
-    statusHeader.style.textAlign = "center";
     const errorMessage = createElement("p", null, message);
     errorBox.appendChild(statusHeader);
     errorBox.appendChild(errorMessage);
     modalWindow.insertBefore(errorBox, document.getElementById("modalBtnWrapper"));
+    setTimeout(() => {
+        errorBox.remove();
+    }, 2000);
 }

@@ -194,8 +194,12 @@ td.btnCell[disable]{
     animation-fill-mode: forwards;
 }
 #modalHeader{
+    padding: 0 2vh;
+    display: flex;
     height: 3.8vh;
     background-color: black;
+    align-items: center;
+    justify-content: space-between;
 }
 .finalProduct{
     margin: 2vh 1.5vh 0;
@@ -228,16 +232,12 @@ td.btnCell[disable]{
 }
 
 /* Icons.*/
-.cancelIcon{
+.headerIcon{
     color: white;
-    position: relative;
-    top: 50%;
-    left: 0.5%;
-    transform: translateY(-50%);
     cursor: pointer;
     transition: 0.5s;
 }
-.cancelIcon:hover{
+.headerIcon:hover{
     color: violet;
 }
 .removeFromBagIcon{
