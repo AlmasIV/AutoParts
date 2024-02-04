@@ -10,6 +10,11 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
+
+        builder.Services.AddAntiforgery();
+
+        builder.Services.AddControllers();
+
         string connectionString = builder.Configuration.GetConnectionString("LocalConnectionString") ?? "";
         builder.Services.AddDbContext<AppDbContext>(options => {
             options.UseSqlServer(connectionString, options => {
@@ -35,6 +40,8 @@ public class Program
         app.UseAuthorization();
 
         app.MapRazorPages();
+
+        app.MapControllers();
         
         app.Run();
     }

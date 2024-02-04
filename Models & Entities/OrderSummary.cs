@@ -1,7 +1,7 @@
 using AutoParts.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace AutoParts;
+namespace AutoParts.Models;
 
 public class OrderSummary {
     [Required]

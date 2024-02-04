@@ -1,4 +1,29 @@
 ﻿@page
+@using AutoParts.Models
 @model AutoParts.Pages.HistoryModel
 @{
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/history.css" />
+}
+<main>
+    <div id="historyContainer">
+        <div id="list">
+            @if(Model.Orders!.Any()){
+                foreach (Order order in Model.Orders!)
+                {
+                    <div id="@order.Id" class="productContainer">
+                        <p>@order.CreatedOn.ToLocalTime()</p>
+                        <p>Total Price: @order.TotalPrice</p>
+                        <p>Count: @order.Count</p>
+                    </div>
+                }
+            }
+        </div>
+        <div class="details"></div>
+    </div>
+</main>
+
+@section Scripts {
+    <script src="~/js/orderHistory.js"></script>
 }

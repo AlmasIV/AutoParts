@@ -8,6 +8,9 @@ html {
 h1 {
     font-size: 3rem;
 }
+p {
+    font-size: 1.5rem;
+}
 main {
     width: 70vw;
     margin: auto;
@@ -89,7 +92,7 @@ td.btnCell[disable]{
     font-size: 1.2rem;
     text-align: center;
 }
-#orderSummary{
+#bagSummary{
     display: none;
     padding: 1vh;
     max-height: 65vh;
@@ -123,7 +126,7 @@ td.btnCell[disable]{
     max-width: 20vw;
 }
 
-#productInfo{
+#bagInfo{
     max-height: 50vh;
     overflow-y: auto;
     max-width: 20vw;
@@ -144,7 +147,7 @@ td.btnCell[disable]{
     padding: 0.5vh;
 }
 
-#openOrder{
+#openModal{
     width: 100%;
     border: none;
     padding: 1.5vh;
@@ -155,11 +158,11 @@ td.btnCell[disable]{
     color: white;
     transition: 0.5s;
 }
-#openOrder:disabled{
+#openModal:disabled{
     background-color: rgb(77, 77, 77);
     cursor: not-allowed;
 }
-#openOrder:hover:not(:disabled){
+#openModal:hover:not(:disabled){
     margin-top: 1vh;
     border-radius: 2.5vh;
     color: rgb(0, 255, 0);
@@ -186,7 +189,6 @@ td.btnCell[disable]{
     background-color: rgb(255, 255, 255);
     box-shadow: 0.4vh 0.4vh 0.5vh black;
     font-size: 1.4rem;
-    overflow: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -194,12 +196,15 @@ td.btnCell[disable]{
     animation-fill-mode: forwards;
 }
 #modalHeader{
-    padding: 0 2vh;
+    padding: 0.25vh 2vh;
     display: flex;
     height: 3.8vh;
     background-color: black;
     align-items: center;
     justify-content: space-between;
+}
+#itemsWrapper {
+    overflow-y: auto;
 }
 .finalProduct{
     margin: 2vh 1.5vh 0;

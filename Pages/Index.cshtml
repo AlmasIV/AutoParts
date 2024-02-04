@@ -1,8 +1,6 @@
 ﻿@page
 @using AutoParts.Models
 
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
-
 @model IndexModel
 @{
     ViewData["Title"] = "My Collection";
@@ -16,10 +14,7 @@
         "amount",
         "sell"
     };
-
-    var requestToken = Antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
 }
-<input id="RequestVerificationToken" type="hidden" value="@requestToken" />
 <main id="autoPartsTable">
     <table>
         <tr>
@@ -50,7 +45,7 @@
         </tr>
         @foreach (AutoPart item in Model.AutoParts)
         {
-            <tr data-item-id="@item.Id">
+            <tr data-row-id="@item.Id">
                 <td headers="@identifiers[0]">@item.Id</td>
                 <td headers="@identifiers[1]">@item.Name</td>
                 <td headers="@identifiers[2]">@item.Applicability</td>
@@ -58,8 +53,8 @@
                 <td headers="@identifiers[4]">@item.PriceInRubles</td>
                 <td headers="@identifiers[5]">@item.PriceInTenge</td>
                 <td headers="@identifiers[6]">@item.Amount</td>
-                <td data-product-id="@item.Id" headers="@identifiers[7]" class="btnCell sellingBtn pointer" role="button" tabindex=0>
-                    Sell
+                <td data-product-id="@item.Id" headers="@identifiers[7]" class="btnCell addingBtn pointer" role="button" tabindex=0>
+                    Add
                 </td>
             </tr>
         }
@@ -75,17 +70,22 @@
             delete_forever
             </span>
         </div>
+        <div id="itemsWrapper"></div>
         <div id="modalBtnWrapper">
             <button class="primaryBtn finalSell">Sell</button>
         </div>
     </div>
 </div>
 <div id="bagWrapper">
-    <div id="productInfo">
-        <p id="orderSummary">You have no products here.</p>
-        <button id="openOrder" class="pointer" disabled title="You have no items to sell.">Proceed to sell</button>
+    <div id="bagInfo">
+        <p id="bagSummary">You have no products here.</p>
+        <button id="openModal" class="pointer" disabled title="You have no items to sell.">Proceed to sell</button>
     </div>
     <div id="bag" class="pointer">
-        <p>Selected Items <span id="selectedItemsCount">0</span></p>
+        <p>Selected Items <span id="bagCount">0</span></p>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/bag.js"></script>
+}

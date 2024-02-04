@@ -3,73 +3,76 @@
 let itemCount = 0;
 
 // Holds amount value in the table.
-const visualAmount = new Map();
+const rowDictionary = new Map();
 
-document.addEventListener("DOMContentLoaded", function(){
-    const items = document.querySelectorAll("#autoPartsTable table tr:not(:first-child)");
-    let amount, button, amountTd;
-    items.forEach(row => {
-        amountTd = row.querySelector("[headers='amount']");
-        amount = amountTd.innerText;
-        if(amount > 0){
-            button = row.querySelector(".sellingBtn");
-            visualAmount.set(row.getAttribute("data-item-id"), row);
-            button.addEventListener("click", selectProduct);
-        }
-        else{
-            disableSelectButton(row);
-        }
-    });
-});
+function addToBag(id) {
+    itemCount++;
 
-function disableSelectButton(row){
-    row.querySelector("td[headers='amount']").style.color = "red";
-    const selectBtn = row.querySelector("td[headers='sell']");
-    selectBtn.setAttribute("disable", "disable");
-    selectBtn.removeEventListener("click", selectProduct);
-}
-
-function enableSelectButton(row){
-    row.querySelector("td[headers='amount']").style.color = "black";
-    row.querySelector("td[headers='sell']").removeAttribute("disable");
-    row.querySelector("td[headers='sell']").addEventListener("click", selectProduct);
-}
-
-function returnAmount(id){
-    const visualRow = visualAmount.get(id);
-    const amountCell = visualRow.querySelector("td[headers='amount']");
-    let amountNumber = Number(amountCell.textContent);
-    if(amountNumber === 0){
-        enableSelectButton(visualAmount.get(id));
+    // Removing 1 (decrementation of the amount cell) from the table, and adding that 1 to the Bag.
+    const amountCell = rowDictionary.get(id).querySelector("td[headers='amount']");
+    let amount = Number(amountCell.textContent) - 1;
+    amountCell.textContent = amount;
+    if (amount === 0) {
+        disableAddingButton(rowDictionary.get(id));
     }
-    amountNumber += detailedProducts.get(id).amount;
-    amountCell.textContent = amountNumber;
+    updateBagCount(id);
 }
 
-function selectProduct(event){ 
+function addProduct(event) {
     let itemId = event.target.getAttribute("data-product-id");
     addToBag(itemId);
 }
 
-const openOrderButton = document.getElementById("openOrder");
-openOrderButton.addEventListener("click", showSummaryWindow);
+document.addEventListener("DOMContentLoaded", function () {
+    const rows = document.querySelectorAll("#autoPartsTable table tr:not(:first-child)");
+    let amount, addBtn, amountTd;
+    rows.forEach(row => {
+        amountTd = row.querySelector("[headers='amount']");
+        amount = amountTd.innerText;
+        if (Number(amount) > 0) {
+            addBtn = row.querySelector(".addingBtn");
+            rowDictionary.set(row.getAttribute("data-row-id"), row);
+            addBtn.addEventListener("click", addProduct);
+        }
+        else {
+            disableAddingButton(row);
+        }
+    });
+});
 
-function addToBag(id){
-    itemCount ++;
-
-    // Removing 1 from the table, and adding that one to the Bag.
-    const amountTd = visualAmount.get(id).querySelector("td[headers='amount']");
-    let amount = amountTd.textContent - 1;
-    amountTd.textContent = amount;
-    if(amount === 0){
-        disableSelectButton(visualAmount.get(id));
-    }
-    updateProductCount(id);
+function enableAddingButton(row) {
+    row.querySelector("td[headers='amount']").style.color = "black";
+    row.querySelector("td[headers='sell']").removeAttribute("disable");
+    row.querySelector("td[headers='sell']").addEventListener("click", addProduct);
 }
 
-const productCount = document.getElementById("selectedItemsCount");
-const orderSummary = document.getElementById("orderSummary");
-const productInfo = document.getElementById("productInfo");
+function disableAddingButton(row) {
+    row.querySelector("td[headers='amount']").style.color = "red";
+    const addBtn = row.querySelector("td[headers='sell']");
+    addBtn.setAttribute("disable", "disable");
+    addBtn.removeEventListener("click", addProduct);
+}
+
+function returnAmount(id) {
+    const row = rowDictionary.get(id);
+    const amountCell = row.querySelector("td[headers='amount']");
+
+    // If the addBtn is already disabled, enable it.
+    let amountNumber = Number(amountCell.textContent);
+    if (amountNumber === 0) {
+        enableAddingButton(rowDictionary.get(id));
+    }
+
+    amountNumber += detailedProducts.get(id).amount;
+    amountCell.textContent = amountNumber;
+}
+
+const openModalBtn = document.getElementById("openModal");
+openModalBtn.addEventListener("click", showModalWindow);
+
+const bagCount = document.getElementById("bagCount");
+const bagSummary = document.getElementById("bagSummary");
+const bagInfo = document.getElementById("bagInfo");
 
 // Holds pure data about products.
 const detailedProducts = new Map();
@@ -80,46 +83,54 @@ const createdComponents = new Map();
 // Used in last summary modal window.
 const cacheOfFinalProducts = new Map();
 
-function updateProductCount(id){
-    productCount.textContent = itemCount;
-    if(itemCount > 0){
-        orderSummary.textContent = "Selling " + itemCount + " items in total.";
-        openOrderButton.disabled = false;
-        if(id !== null){
-            if(!detailedProducts.has(id)){
-                let tr, name, applicability, company, price, priceInRubles;
-                tr = document.querySelector(`main#autoPartsTable table tr[data-item-id="${id}"]`);
+function updateBagCount(id) {
+    bagCount.textContent = itemCount;
+    if (itemCount > 0) {
+        if (itemCount === 1) {
+            bagSummary.textContent = "Selling 1 item in total.";
+        }
+        else {
+            bagSummary.textContent = "Selling " + itemCount + " items in total.";
+        }
+        openModalBtn.disabled = false;
+        if (id !== null) {
+            if (!detailedProducts.has(id)) {
+                let tr, name, applicability, company, priceInTenge, priceInRubles;
+                tr = rowDictionary.get(id);
                 name = tr.querySelector("td[headers='name']").textContent;
                 applicability = tr.querySelector("td[headers='applicability']").textContent;
                 company = tr.querySelector("td[headers='company']").textContent;
-                price = tr.querySelector("td[headers='priceInTenge']").textContent;
+                priceInTenge = tr.querySelector("td[headers='priceInTenge']").textContent;
                 priceInRubles = tr.querySelector("td[headers='priceInRubles']").textContent;
-                detailedProducts.set(id, { name, applicability, company, price, priceInRubles, amount: 1 });
+
+                detailedProducts.set(id, { name, applicability, company, priceInTenge, priceInRubles, amount: 1 });
+
                 createComponent(id);
             }
-            else{
-                detailedProducts.get(id).amount ++;
+            else {
+                detailedProducts.get(id).amount++;
                 createdComponents.get(id).querySelector("span.productAmount").textContent = detailedProducts.get(id).amount;
             }
         }
     }
-    else{
-        openOrderButton.disabled = true;
-        orderSummary.textContent = "You have no products here.";
+    else {
+        openModalBtn.disabled = true;
+        bagSummary.textContent = "You selected nothing.";
     }
 }
 
-function createElement(element, className = null, text = null){
+function createElement(element, className = null, text = null) {
     const _element = document.createElement(element);
-    if(className !== null){
+    if (className !== null) {
         _element.classList.add(className);
     }
-    if(text !== null){
+    if (text !== null) {
         _element.textContent = text;
     }
     return _element;
 }
-function createComponent(id){
+
+function createComponent(id) {
     let removeIcon, container, detailedProduct;
 
     detailedProduct = detailedProducts.get(id);
@@ -134,66 +145,65 @@ function createComponent(id){
 
     createdComponents.set(id, container);
 
-    productInfo.appendChild(container);
+    bagInfo.appendChild(container);
 }
 
-function fillContainer(container, detailedProduct){
+function fillContainer(container, detailedProduct) {
     let paragraph;
 
     paragraph = createDetailedParagraph("Name: ", "productName", detailedProduct.name);
     container.appendChild(paragraph);
-    
+
     paragraph = createDetailedParagraph("Applicability: ", "productApplicability", detailedProduct.applicability);
     container.appendChild(paragraph);
-    
+
     paragraph = createDetailedParagraph("Company: ", "productCompany", detailedProduct.company);
     container.appendChild(paragraph);
 
-    paragraph = createDetailedParagraph("Price: ", "productPrice", detailedProduct.price);
+    paragraph = createDetailedParagraph("Price: ", "productPrice", detailedProduct.priceInTenge);
     container.appendChild(paragraph);
 
     paragraph = createDetailedParagraph("Amount: ", "productAmount", detailedProduct.amount);
     container.appendChild(paragraph);
 }
 
-function createDetailedParagraph(pText, propClass, propValue){
+function createDetailedParagraph(pText, propClass, propValue) {
     const paragraph = createElement("p", null, pText);
     const prop = createElement("span", propClass, propValue);
     paragraph.appendChild(prop);
     return paragraph;
 }
 
-function createDeletionIcon(){
+function createDeletionIcon() {
     const removeIcon = createElement("span", "removeFromBagIcon", "delete");
     removeIcon.classList.add("material-symbols-outlined");
-    removeIcon.addEventListener("click", removeItemHandler);
+    removeIcon.addEventListener("click", removeItemFromBag);
     removeIcon.setAttribute("title", "Remove Item");
 
     return removeIcon;
-
-    function removeItemHandler(event){
-        const itemContainer = event.target.parentNode;
-
-        // itemContainer.id -> starts with a number, follows by string. Need to extract the starting number.
-        const itemId = parseInt(itemContainer.id).toString();
-
-
-        event.target.removeEventListener("click", removeItemHandler);
-        itemCount = itemCount - detailedProducts.get(itemId).amount;
-        removeProduct(itemId);
-        cacheOfFinalProducts.delete(itemId);
-        itemContainer.remove();
-        updateProductCount(null);
-        enableSelectButton(visualAmount.get(itemId));
-    }
 }
 
-function removeProduct(id){
+function removeItemFromBag(event) {
+    const itemContainer = event.target.parentNode;
+
+    // itemContainer.id -> starts with a number, follows by string. Need to extract the starting number.
+    const itemId = parseInt(itemContainer.id).toString();
+
+    event.target.removeEventListener("click", removeItemFromBag);
+    itemCount = itemCount - detailedProducts.get(itemId).amount;
+    removeProduct(itemId);
+    cacheOfFinalProducts.delete(itemId);
+    itemContainer.remove();
+    updateBagCount(null);
+    enableAddingButton(rowDictionary.get(itemId));
+}
+
+function removeProduct(id) {
     createdComponents.delete(id);
     returnAmount(id);
     detailedProducts.delete(id);
     let cachedProduct = cacheOfFinalProducts.get(id);
-    if(cachedProduct){
+    if (cachedProduct) {
         cachedProduct.value.remove();
         cacheOfFinalProducts.delete(id);
     }
@@ -204,62 +214,67 @@ const bagBtn = document.getElementById("bag");
 let isBagBtnActive = false;
 let timeOutId;
 
-bagBtn.addEventListener("mouseover", function(){
-    timeOutId = setTimeout(showOrderSummary, 500);
+bagBtn.addEventListener("mouseover", function () {
+    timeOutId = setTimeout(showBagSummary, 500);
 });
-bagBtn.addEventListener("mouseout", function(){
+bagBtn.addEventListener("mouseout", function () {
     clearTimeout(timeOutId);
-    if(!isBagBtnActive){
-        hideOrderSummary();
+    if (!isBagBtnActive) {
+        hideBagSummary();
     }
 });
-bagBtn.addEventListener("click", function(){
-    if(!isBagBtnActive){
-        showOrderSummary();
+bagBtn.addEventListener("click", function () {
+    if (!isBagBtnActive) {
+        showBagSummary();
         bagBtn.classList.add("activeBag");
         isBagBtnActive = true;
     }
-    else{
-        hideOrderSummary();
+    else {
+        hideBagSummary();
         bagBtn.classList.remove("activeBag");
         isBagBtnActive = false;
     }
 });
 
-function showOrderSummary(){
-    orderSummary.style.display = "block";
-    productInfo.style.display = "block";
+function showBagSummary() {
+    bagSummary.style.display = "block";
+    bagInfo.style.display = "block";
 }
-function hideOrderSummary(){
-    orderSummary.style.display = "none";
-    productInfo.style.display = "none";
+function hideBagSummary() {
+    bagSummary.style.display = "none";
+    bagInfo.style.display = "none";
 }
 
 const modalContainer = document.getElementById("modalContainer");
 const modalWindow = modalContainer.firstElementChild;
+const itemsWrapper = modalWindow.querySelector("#itemsWrapper");
 
-function showSummaryWindow(){
+function showModalWindow() {
     modalContainer.style.display = "block";
-    let cachedProduct, container, paragraph;
-    detailedProducts.forEach(function(value, id){
+    let cachedProduct, container;
+    let totalPrice = 0;
+    detailedProducts.forEach(function (value, id) {
+        totalPrice += value.priceInTenge * value.amount;
         cachedProduct = cacheOfFinalProducts.get(id);
-        if(cachedProduct){
+        if (cachedProduct) {
             cachedProduct = cachedProduct.value;
-            if(cachedProduct.amount !== value.amount){
-                cachedProduct.amount = value.amount;
+
+            // If user added additional product, update the amount.
+            if (cachedProduct.amount !== value.amount) {
+                cachedProduct.querySelector("p span.productAmount").textContent = value.amount;
             }
         }
-        else{
+        else {
             cacheOfFinalProducts.set(id, { isCreated: false, value });
         }
     });
-    cacheOfFinalProducts.forEach(function(value, id){
-        if(value.isCreated !== true){
+    cacheOfFinalProducts.forEach(function (value, id) {
+        if (value.isCreated !== true) {
             container = createElement("div", "finalProduct", null);
-            paragraph = fillContainer(container, detailedProducts.get(id));
+            fillContainer(container, detailedProducts.get(id));
             value.isCreated = true;
             value.value = container;
-            modalWindow.appendChild(container);
+            itemsWrapper.appendChild(container);
         }
     });
 }
@@ -270,63 +285,63 @@ document.getElementById("modalClearIcon").addEventListener("click", () => {
         returnAmount(key);
     });
     resetBag();
-    indicateSuccess("Successfully cleared items.");
+    indicateSuccess("Cleared items.");
 });
 
-function closeSummaryWindow(){
+function closeSummaryWindow() {
     modalContainer.style.display = "none";
 }
 
-const finalSellBtn = document.getElementById("modalBtnWrapper").querySelector("button");
-finalSellBtn.addEventListener("click", makeSellingRequest);
+const sellBtn = document.getElementById("modalBtnWrapper").querySelector("button");
+sellBtn.addEventListener("click", makeSellingRequest);
 
-function convertItemsToJSON(){
+function convertItemsToJSON() {
     const collectionOfItems = [];
     let totalPrice = 0;
-    
+
     detailedProducts.forEach((value, key) => {
         const singleItem = {
             id: key,
             name: value.name,
             applicability: value.applicability,
             company: value.company === "Unknown" ? null : value.company,
-            priceInTenge: value.price,
+            priceInTenge: value.priceInTenge,
             priceInRubles: value.priceInRubles,
             amount: value.amount
         };
         totalPrice += singleItem.priceInTenge * singleItem.amount;
         collectionOfItems.push(singleItem);
     });
-    return JSON.stringify({ orderedParts: collectionOfItems, totalPrice});
+    console.log("Sending " + totalPrice);
+    return JSON.stringify({ orderedParts: collectionOfItems, totalPrice });
 }
 
-async function makeSellingRequest(){
+async function makeSellingRequest() {
     const orderData = convertItemsToJSON();
-    try{
-        const response = await fetch("/", {
-            method: "POST",
+    try {
+        const response = await fetch("/api/products/", {
+            method: "PUT",
             body: orderData,
             headers: {
-                "Content-Type": "application/json",
-                "RequestVerificationToken": document.getElementById("RequestVerificationToken").value
+                "Content-Type": "application/json"
             }
         });
-        if(!response.ok){
+        if (!response.ok) {
             const errorMessage = await response.json();
             indicateFailure(errorMessage.message, response.status);
         }
-        else{
+        else {
             const responseData = await response.json();
             resetBag();
             indicateSuccess(responseData.message);
         }
     }
-    catch(error){
+    catch (error) {
         console.log("An error occurred! " + error.message);
     }
 }
 
-function resetBag(){
+function resetBag() {
     detailedProducts.clear();
     cacheOfFinalProducts.clear();
     createdComponents.forEach((value) => {
@@ -339,9 +354,9 @@ function resetBag(){
         value.style.display = "none";
     });
 }
-function indicateSuccess(message){
+function indicateSuccess(message) {
     let successMessage = modalWindow.querySelector("#successMessage");
-    if(!successMessage){
+    if (!successMessage) {
         successMessage = document.createElement("p");
         successMessage.textContent = message;
         successMessage.id = "successMessage";
@@ -355,21 +370,21 @@ function indicateSuccess(message){
         modalWindow.style.animation = "0.2s ease-in-out paused indicateSuccess";
         modalWindow.style.animationFillMode = "forwards";
         modalWindow.querySelectorAll("div").forEach((value) => {
-            if(value.id === "modalHeader"){
+            if (value.id === "modalHeader") {
                 value.style.display = "flex";
             }
-            else{
+            else {
                 value.style.display = "block";
             }
         });
         successMessage.style.display = "none";
         itemCount = 0;
-        updateProductCount(null);
+        updateBagCount(null);
         closeSummaryWindow();
     }, 1500);
 }
 
-function indicateFailure(message, statusCode){
+function indicateFailure(message, statusCode) {
     const errorBox = createElement("div", "finalProduct", null);
     errorBox.style.backgroundColor = "red";
     errorBox.style.color = "white";

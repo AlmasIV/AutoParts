@@ -38,4 +38,9 @@ public class AutoPart{
     [Range(0, short.MaxValue)]
     [JsonPropertyName("amount")]
     public short Amount { get; set; }
+
+    [JsonIgnore]
+    public List<Order>? Orders { get; set; }
+    [JsonIgnore]
+    public List<AutoPartOrder>? AutoPartOrders { get; set; }
 }
