@@ -1,3 +1,5 @@
+// This JS file is used in the Index page.
+
 "use strict";
 
 let itemCount = 0;

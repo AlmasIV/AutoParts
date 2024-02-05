@@ -1,3 +1,5 @@
+// This JS file is used in the History page.
+
 "use strict";
 
 const historyContainer = document.getElementById("historyContainer");
@@ -95,26 +97,45 @@ function playGrow() {
 function displayDetails(id, order) {
     detailsWrapperDiv = document.createElement("div");
 
-    let orderId = createParagraph("Order " + id);
+    let orderId = createDescriptionElement("p", "Order " + id);
     orderId.id = "orderId";
     detailsWrapperDiv.appendChild(orderId);
     let autoPart;
+    let element;
     order.forEach((value) => {
         autoPart = value.autoPart;
-        detailsWrapperDiv.appendChild(createParagraph("Name: " + autoPart.name, "name"));
-        detailsWrapperDiv.appendChild(createParagraph("ID: " + autoPart.id, "detail"));
-        detailsWrapperDiv.appendChild(createParagraph("Sold Amount: " + value.soldAmount, "detail"));
-        detailsWrapperDiv.appendChild(createParagraph("Applicability: " + autoPart.applicability, "detail"));
-        detailsWrapperDiv.appendChild(createParagraph("Company: " + (autoPart.company ?? "Unknown"), "detail"));
+
+        element = createDescriptionElement("p", "Name: ", "name");
+        element.appendChild(createDescriptionElement("span", autoPart.name, "detail"));
+
+        detailsWrapperDiv.appendChild(element);
+
+        element = createDescriptionElement("p", "ID: ", "mg-left-2vh");
+        element.appendChild(createDescriptionElement("span", autoPart.id, "detail"));
+
+        detailsWrapperDiv.appendChild(element);
+
+        element = createDescriptionElement("p", "Sold Amount: ", "mg-left-2vh");
+        element.appendChild(createDescriptionElement("span", value.soldAmount, "detail"));
+
+        detailsWrapperDiv.appendChild(element);
+
+        element = createDescriptionElement("p", "Applicability: ", "mg-left-2vh");
+        element.appendChild(createDescriptionElement("span", autoPart.applicability, "detail"));
+
+        detailsWrapperDiv.appendChild(element);
+
+        element = createDescriptionElement("p", "Company: ", "mg-left-2vh");
+        element.appendChild(createDescriptionElement("span", autoPart.company, "detail"));
     });
 
     details.appendChild(detailsWrapperDiv);
 }
 
-function createParagraph(text, optionalClass = null) {
-    let result = document.createElement("p");
+function createDescriptionElement(elementType, text, optionalClass = null){
+    let result = document.createElement(elementType);
     result.textContent = text;
-    if (optionalClass !== null) {
+    if(optionalClass !== null){
         result.classList.add(optionalClass);
     }
     return result;

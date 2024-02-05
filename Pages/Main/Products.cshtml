@@ -1,0 +1,65 @@
+﻿@page "{id:int}"
+
+@using AutoParts.Models
+
+@model AutoParts.Pages.ProductsModel
+@{
+    AutoPart part = Model.requestedPart!;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/products.css">
+}
+<main>
+    <div class="description">
+        <div id="currentState">
+            <h1>@part.Name</h1>
+            <p>Applicability: <span class="detail">@part.Applicability</span></p>
+            <p>Company: <span class="detail">@(part.Company ?? "Unknown")</span></p>
+            <p>Price in RUB: <span class="detail">₽@part.PriceInRubles</span></p>
+            <p>Price in KZT: <span class="detail">₸@part.PriceInTenge</span></p>
+            <p>Amount: <span class="detail">@part.Amount</span></p>
+            <div class="btnWrapper">
+                <button class="modifyBtn" id="editBtn" disabled>Save Changes</button>
+                <button class="modifyBtn" id="deleteBtn">Delete</button>
+            </div>
+        </div>
+        <div id="updatedState">
+            <form method="post" asp-antiforgery="true" asp-page-handler="/Main/Products">
+                <div class="editInput">
+                    <label class="detail" asp-for="requestedPart.Name"></label>
+                    <input asp-for="requestedPart.Name" value="@part.Name" autofocus>
+                    <span class="error" asp-validation-for="requestedPart.Name"></span>
+                </div>
+                <div class="editInput">
+                    <label class="detail" asp-for="requestedPart.Applicability"></label>
+                    <input asp-for="requestedPart.Name" value="@part.Applicability">
+                    <span class="error" asp-validation-for="requestedPart.Applicability"></span>
+                </div>
+                <div class="editInput">
+                    <label class="detail" asp-for="requestedPart.Company"></label>
+                    <input asp-for="requestedPart.Company" value="@part.Company">
+                    <span class="error" asp-validation-for="requestedPart.Company"></span>
+                </div>
+                <div class="editInput">
+                    <label class="detail" asp-for="requestedPart.PriceInRubles"></label>
+                    <input asp-for="requestedPart.PriceInRubles" value="@part.PriceInRubles">
+                    <span class="error" asp-validation-for="requestedPart.PriceInRubles"></span>
+                </div>
+                <div class="editInput">
+                    <label class="detail" asp-for="requestedPart.PriceInTenge"></label>
+                    <input asp-for="requestedPart.PriceInTenge" value="@part.PriceInTenge">
+                    <span class="error" asp-validation-for="requestedPart.PriceInTenge"></span>
+                </div>
+                <div class="editInput">
+                    <label class="detail" asp-for="requestedPart.Amount"></label>
+                    <input asp-for="requestedPart.Amount" value="@part.Amount">
+                    <span class="error" asp-validation-for="requestedPart.Amount"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <script src="~/js/products.js"></script>
+}

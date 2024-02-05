@@ -1,0 +1,67 @@
+/* Styles that are used in the Products/{id} page. */
+.description {
+    margin-top: 10vh;
+    padding: 2vh;
+    border-radius: 2vh;
+    background-color: rgb(206, 206, 206);
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.description > div {
+    flex-basis: 50%;
+}
+
+.btnWrapper {
+    position: absolute;
+    bottom: 2vh;
+    left: 2vw;
+}
+
+.modifyBtn {
+    padding: 1vh 2vw;
+    font-size: 1.5rem;
+    transition: 0.5s;
+}
+
+#editBtn {
+    color: white;
+    border: none;
+    background-color: black;
+}
+#editBtn:not([disabled]):hover {
+    color: violet;
+}
+
+#editBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+#deleteBtn {
+    box-sizing: border-box;
+    border: 0.2vh solid red;
+}
+#deleteBtn:hover {
+    background-color: red;
+    color: white;
+}
+
+input {
+    border: 0.2vh solid black;
+    padding: 0.4vh 0.5vh;
+    margin-top: 0.4vh;
+    box-sizing: border-box;
+    outline: none;
+}
+input:focus {
+    box-shadow: 0.2vh 0.2vh 0.5vh 0.5vh violet;
+}
+
+.editInput {
+    margin-top: 2vh;
+}
+
+label {
+    font-size: 1.5rem;
+}

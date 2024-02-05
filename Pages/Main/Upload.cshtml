@@ -4,7 +4,7 @@
 }
 <main>
     <h1>Add a new type of auto part</h1>
-    <form method="post">
+    <form method="post" asp-antiforgery="true" asp-action="/Main/Upload">
         <div class="input-container">
             <label asp-for="AutoPart.Name"></label>
             <input asp-for="AutoPart.Name">

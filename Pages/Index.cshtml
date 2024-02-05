@@ -47,7 +47,7 @@
         {
             <tr data-row-id="@item.Id">
                 <td headers="@identifiers[0]">@item.Id</td>
-                <td headers="@identifiers[1]">@item.Name</td>
+                <td headers="@identifiers[1]"><a asp-page="/Main/Products" asp-route-id="@item.Id">@item.Name</a></td>
                 <td headers="@identifiers[2]">@item.Applicability</td>
                 <td headers="@identifiers[3]">@(item.Company == null ? "Unknown" : item.Company)</td>
                 <td headers="@identifiers[4]">@item.PriceInRubles</td>

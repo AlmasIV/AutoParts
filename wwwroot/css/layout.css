@@ -1,3 +1,4 @@
+/* Styles that are used in the Index page. Some parts are used in all pages (e.g. html, main, p tags for example). */
 * {
     padding: 0;
     margin: 0;
@@ -14,6 +15,13 @@ p {
 main {
     width: 70vw;
     margin: auto;
+}
+.detail {
+    background-color: greenyellow;
+    border-radius: 2vh;
+}
+.mg-left-2vh {
+    margin-left: 2vh;
 }
 .pointer{
     cursor: pointer;
