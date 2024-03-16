@@ -1,5 +1,5 @@
 /* Styles that are used in the History page. */
-#historyContainer {
+#history-container {
     width: 100%;
     height: 80vh;
     margin: 5vh auto;
@@ -15,13 +15,13 @@
     flex-grow: 1;
     overflow-y: auto;
 }
-#historyContainer .productContainer:hover {
+#history-container .product-container:hover {
     box-shadow: 0.2vh 0.2vh 0.5vh 0.2vh white;
     background-color: azure;
     border-color: transparent;
 }
 
-.selectedItem {
+.selected-item {
     box-shadow: 0.2vh 0.2vh 0.5vh 0.2vh white;
     background-color: azure!important;
     border-color: transparent;
@@ -55,6 +55,6 @@
 .name {
     color: green;
 }
-#orderId {
+#order-id {
     font-size: 2rem;
 }

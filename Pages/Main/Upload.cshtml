@@ -7,12 +7,12 @@
     <form method="post" asp-antiforgery="true" asp-action="/Main/Upload">
         <div class="input-container">
             <label asp-for="AutoPart.Name"></label>
-            <input asp-for="AutoPart.Name" minlength="3">
+            <input asp-for="AutoPart.Name" minlength="3" required>
             <span class="error-message" asp-validation-for="AutoPart.Name"></span>
         </div>
         <div class="input-container">
             <label asp-for="AutoPart.Applicability"></label>
-            <input asp-for="AutoPart.Applicability" minlength="3">
+            <input asp-for="AutoPart.Applicability" minlength="3" required>
             <span class="error-message" asp-validation-for="AutoPart.Applicability"></span>
         </div>
         <div class="input-container">
@@ -22,12 +22,12 @@
         </div>
         <div class="input-container">
             <label asp-for="AutoPart.PriceInRubles"></label>
-            <input asp-for="AutoPart.PriceInRubles" value="0" type="number" step="500.00" min="0">
+            <input asp-for="AutoPart.PriceInRubles" value="0" type="number" step="500.00" min="0" max="2000000">
             <span class="error-message" asp-validation-for="AutoPart.PriceInRubles"></span>
         </div>
         <div class="input-container">
             <label asp-for="AutoPart.PriceInTenge"></label>
-            <input asp-for="AutoPart.PriceInTenge" value="0" type="number" step="500.00" min="0">
+            <input asp-for="AutoPart.PriceInTenge" value="0" type="number" step="500.00" min="0" required max="2000000">
             <span class="error-message" asp-validation-for="AutoPart.PriceInTenge"></span>
         </div>
         <div class="input-container">

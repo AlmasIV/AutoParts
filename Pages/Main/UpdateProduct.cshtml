@@ -7,24 +7,24 @@
     AutoPart part = Model.AutoPart!;
 }
 @section Styles {
-    <link rel="stylesheet" href="~/css/products.css">
+    <link rel="stylesheet" href="~/css/updateProduct.css">
 }
 <main>
     <div class="description">
-        <div id="currentState">
+        <div id="current-state">
             <h1>@part.Name</h1>
             <p>Applicability: <span class="detail">@part.Applicability</span></p>
             <p>Company: <span class="detail">@part.Company</span></p>
             <p>Price in RUB: <span class="detail">₽@part.PriceInRubles</span></p>
             <p>Price in KZT: <span class="detail">₸@part.PriceInTenge</span></p>
             <p>Amount: <span class="detail">@part.Amount</span></p>
-            <div class="btnWrapper">
-                <button class="modifyBtn" id="editBtn" form="updateForm" disabled>Save Changes</button>
-                <button class="modifyBtn" id="deleteBtn">Delete</button>
+            <div class="btn-wrapper">
+                <button class="modify-btn" id="edit-btn" form="update-form" disabled>Save Changes</button>
+                <button class="modify-btn" id="delete-btn">Delete</button>
             </div>
         </div>
-        <div id="updatedState">
-            <form id="updateForm" method="post" asp-antiforgery="true" asp-action="/Main/Upload">
+        <div id="updated-state">
+            <form id="update-form" method="post" asp-antiforgery="true" asp-action="/Main/Upload">
                 <div class="input-container">
                     <label asp-for="AutoPart!.Name" class="detail"></label>
                     <input asp-for="AutoPart!.Name" value="@part.Name" minlength="3" required>
@@ -42,12 +42,12 @@
                 </div>
                 <div class="input-container">
                     <label asp-for="AutoPart!.PriceInRubles" class="detail"></label>
-                    <input asp-for="AutoPart!.PriceInRubles" value="@part.PriceInRubles" type="number" step="500.00" min="0">
+                    <input asp-for="AutoPart!.PriceInRubles" value="@part.PriceInRubles" type="number" step="500.00" min="0" max="2000000">
                     <span class="error-message" asp-validation-for="AutoPart!.PriceInRubles"></span>
                 </div>
                 <div class="input-container">
                     <label asp-for="AutoPart!.PriceInTenge" class="detail"></label>
-                    <input asp-for="AutoPart!.PriceInTenge" value="@part.PriceInTenge" type="number" step="500.00" min="0">
+                    <input asp-for="AutoPart!.PriceInTenge" value="@part.PriceInTenge" type="number" step="500.00" min="0" required max="2000000">
                     <span class="error-message" asp-validation-for="AutoPart!.PriceInTenge"></span>
                 </div>
                 <div class="input-container">
@@ -61,4 +61,4 @@
 </main>
 
 <script type="module" src="~/js/autoPartValidation.js"></script>
-<script type="module" src="~/js/products.js"></script>
+<script type="module" src="~/js/updateProduct.js"></script>

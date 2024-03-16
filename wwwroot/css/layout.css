@@ -68,7 +68,7 @@ main {
 }
 
 /*Table styles. Index Page.*/
-main#autoPartsTable {
+main#auto-parts-table {
     width: 99%;
 }
 table {
@@ -88,29 +88,29 @@ td, th {
 tr:nth-child(even){
     background-color: rgb(206, 206, 206);
 }
-td.btnCell:not([disable]){
+td.btn-cell:not([disable]){
     background-color: rgb(188, 255, 188);
     font-size: 1.4rem;
     transition: 0.5s;
 }
-td.btnCell:not([disable]):hover{
+td.btn-cell:not([disable]):hover{
     font-size: 1.4rem;
     background-color: rgb(0, 255, 0);
     font-weight: bolder;
 }
-td.btnCell[disable]{
+td.btn-cell[disable]{
     background-color: rgb(120, 205, 120);
     cursor: not-allowed;
 }
 /*Product bag styles.*/
-#bagWrapper{
+#bag-wrapper{
     position: fixed;
     bottom: 0.5vh;
     right: 0.5vw;
     font-size: 1.2rem;
     text-align: center;
 }
-#bagSummary{
+#bag-summary{
     display: none;
     padding: 1vh;
     max-height: 65vh;
@@ -129,7 +129,7 @@ td.btnCell[disable]{
     color: white;
     font-size: 1.5rem;
 }
-#bag:hover, #bag.activeBag{
+#bag:hover, #bag.active-bag{
     height: 7vh;
     line-height: 7vh;
     width: 20vw;
@@ -140,24 +140,24 @@ td.btnCell[disable]{
 }
 
 /*Product list styles.*/
-.productContainer p{
+.product-container p{
     max-width: 20vw;
 }
 
-#bagInfo{
+#bag-info{
     max-height: 50vh;
     overflow-y: auto;
     max-width: 20vw;
     display: none;
 }
 
-.productContainer:nth-child(even){
+.product-container:nth-child(even){
     background-color: rgb(206, 206, 206);
 }
-.productContainer:nth-child(odd){
+.product-container:nth-child(odd){
     background-color: rgb(243, 243, 243);
 }
-.productContainer{
+.product-container{
     position: relative;
     margin: 1vh 0.5vh;
     border: 1px solid black;
@@ -165,7 +165,7 @@ td.btnCell[disable]{
     padding: 0.5vh;
 }
 
-#openModal{
+#open-modal{
     width: 100%;
     border: none;
     padding: 1.5vh;
@@ -176,18 +176,18 @@ td.btnCell[disable]{
     color: white;
     transition: 0.5s;
 }
-#openModal:disabled{
+#open-modal:disabled{
     background-color: rgb(77, 77, 77);
     cursor: not-allowed;
 }
-#openModal:hover:not(:disabled){
+#open-modal:hover:not(:disabled){
     margin-top: 1vh;
     border-radius: 2.5vh;
     color: rgb(0, 255, 0);
 }
 
 /* Modal Window Styles. */
-#modalContainer{
+#modal-container{
     position: fixed;
     top: 0;
     left: 0;
@@ -197,7 +197,7 @@ td.btnCell[disable]{
     z-index: 1;
     display: none;
 }
-#modalWindow{
+#modal-window{
     position: relative;
     width: 50%;
     height: 50%;
@@ -210,10 +210,10 @@ td.btnCell[disable]{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    animation: 0.2s ease-in-out paused indicateSuccess;
+    animation: 0.2s ease-in-out paused indicate-success;
     animation-fill-mode: forwards;
 }
-#modalHeader{
+#modal-header{
     padding: 0.25vh 2vh;
     display: flex;
     height: 3.8vh;
@@ -221,22 +221,22 @@ td.btnCell[disable]{
     align-items: center;
     justify-content: space-between;
 }
-#itemsWrapper {
+#items-wrapper {
     overflow-y: auto;
 }
-.finalProduct{
+.final-product{
     margin: 2vh 1.5vh 0;
     padding: 0.5vh;
     border: 0.2vh solid black;
     background-color: rgb(206, 206, 206);
 }
-#modalBtnWrapper{
+#modal-btn-wrapper{
     width: 100%;
     margin-top: 2vh;
     order: 2;
     align-self: flex-end;
 }
-.primaryBtn{
+.primary-btn{
     padding: 0.5vh;
     height: 5vh;
     width: 5vw;
@@ -246,31 +246,31 @@ td.btnCell[disable]{
     color: white;
     transition: 0.5s;
 }
-.primaryBtn:hover{
+.primary-btn:hover{
     border-radius: 2.5vh;
     color: rgb(0, 255, 0);
 }
-.finalSell{
+.final-sell{
     width: 100%;
 }
 
 /* Icons.*/
-.headerIcon{
+.header-icon{
     color: white;
     cursor: pointer;
     transition: 0.5s;
 }
-.headerIcon:hover{
+.header-icon:hover{
     color: violet;
 }
-.removeFromBagIcon{
+.remove-from-bag-icon{
     position: absolute;
     bottom: 0.2vh;
     right: 0.2vh;
     transition: 0.5s;
     cursor: pointer;
 }
-.removeFromBagIcon:hover{
+.remove-from-bag-icon:hover{
     color: red;
     font-size: 2rem;
 }
@@ -282,7 +282,7 @@ td.btnCell[disable]{
     top: 50%;
     transform: translateY(-50%);
 }
-@keyframes indicateSuccess {
+@keyframes indicate-success {
     0% {
         width: 50%;
         height: 50%;

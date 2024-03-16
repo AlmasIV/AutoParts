@@ -13,48 +13,48 @@
     flex-basis: 50%;
 }
 
-.btnWrapper {
+.btn-wrapper {
     position: absolute;
     bottom: 2vh;
     left: 2vw;
 }
 
-.modifyBtn {
+.modify-btn {
     padding: 1vh 2vw;
     font-size: 1.5rem;
     transition: 0.5s;
 }
 
-#editBtn {
+#edit-btn {
     color: white;
     border: none;
     background-color: black;
 }
-#editBtn:not([disabled]):hover {
+#edit-btn:not([disabled]):hover {
     color: greenyellow;
 }
 
-#editBtn:disabled {
+#edit-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
-#deleteBtn {
+#delete-btn {
     box-sizing: border-box;
     border: 0.2vh solid red;
 }
-#deleteBtn:hover {
+#delete-btn:hover {
     background-color: red;
     color: white;
 }
-#updatedState form div.input-container {
+#updated-state form div.input-container {
     margin-top: 2vh;
 }
-#updatedState form div.input-container label {
+#updated-state form div.input-container label {
     width: auto;
     display: inline-block;
     margin-bottom: 1.5vh;
 }
-#updatedState form div.input-container label + input {
+#updated-state form div.input-container label + input {
     padding: 0.5vh 1vh;
     box-sizing: border-box;
 }

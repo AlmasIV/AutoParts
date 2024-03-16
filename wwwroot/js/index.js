@@ -26,7 +26,7 @@ function addProduct(event) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const rows = document.querySelectorAll("#autoPartsTable table tr:not(:first-child)");
+    const rows = document.querySelectorAll("#auto-parts-table table tr:not(:first-child)");
     let amount, addBtn, amountTd;
     rows.forEach(row => {
         amountTd = row.querySelector("[headers='amount']");
@@ -69,12 +69,12 @@ function returnAmount(id) {
     amountCell.textContent = amountNumber;
 }
 
-const openModalBtn = document.getElementById("openModal");
+const openModalBtn = document.getElementById("open-modal");
 openModalBtn.addEventListener("click", showModalWindow);
 
-const bagCount = document.getElementById("bagCount");
-const bagSummary = document.getElementById("bagSummary");
-const bagInfo = document.getElementById("bagInfo");
+const bagCount = document.getElementById("bag-count");
+const bagSummary = document.getElementById("bag-summary");
+const bagInfo = document.getElementById("bag-info");
 
 // Holds pure data about products.
 const detailedProducts = new Map();
@@ -137,7 +137,7 @@ function createComponent(id) {
 
     detailedProduct = detailedProducts.get(id);
 
-    container = createElement("div", "productContainer", null);
+    container = createElement("div", "product-container", null);
     container.id = id + "bugProduct";
 
     fillContainer(container, detailedProduct);
@@ -177,7 +177,7 @@ function createDetailedParagraph(pText, propClass, propValue) {
 }
 
 function createDeletionIcon() {
-    const removeIcon = createElement("span", "removeFromBagIcon", "delete");
+    const removeIcon = createElement("span", "remove-from-bag-icon", "delete");
     removeIcon.classList.add("material-symbols-outlined");
     removeIcon.addEventListener("click", removeItemFromBag);
     removeIcon.setAttribute("title", "Remove Item");
@@ -228,12 +228,12 @@ bagBtn.addEventListener("mouseout", function () {
 bagBtn.addEventListener("click", function () {
     if (!isBagBtnActive) {
         showBagSummary();
-        bagBtn.classList.add("activeBag");
+        bagBtn.classList.add("active-bag");
         isBagBtnActive = true;
     }
     else {
         hideBagSummary();
-        bagBtn.classList.remove("activeBag");
+        bagBtn.classList.remove("active-bag");
         isBagBtnActive = false;
     }
 });
@@ -247,9 +247,9 @@ function hideBagSummary() {
     bagInfo.style.display = "none";
 }
 
-const modalContainer = document.getElementById("modalContainer");
+const modalContainer = document.getElementById("modal-container");
 const modalWindow = modalContainer.firstElementChild;
-const itemsWrapper = modalWindow.querySelector("#itemsWrapper");
+const itemsWrapper = modalWindow.querySelector("#items-wrapper");
 
 function showModalWindow() {
     modalContainer.style.display = "block";
@@ -272,7 +272,7 @@ function showModalWindow() {
     });
     cacheOfFinalProducts.forEach(function (value, id) {
         if (value.isCreated !== true) {
-            container = createElement("div", "finalProduct", null);
+            container = createElement("div", "final-product", null);
             fillContainer(container, detailedProducts.get(id));
             value.isCreated = true;
             value.value = container;
@@ -281,8 +281,8 @@ function showModalWindow() {
     });
 }
 
-document.getElementById("modalCloseIcon").addEventListener("click", closeSummaryWindow);
-document.getElementById("modalClearIcon").addEventListener("click", () => {
+document.getElementById("modal-close-icon").addEventListener("click", closeSummaryWindow);
+document.getElementById("modal-clear-icon").addEventListener("click", () => {
     cacheOfFinalProducts.forEach((value, key) => {
         returnAmount(key);
     });
@@ -294,7 +294,7 @@ function closeSummaryWindow() {
     modalContainer.style.display = "none";
 }
 
-const sellBtn = document.getElementById("modalBtnWrapper").querySelector("button");
+const sellBtn = document.getElementById("modal-btn-wrapper").querySelector("button");
 sellBtn.addEventListener("click", makeSellingRequest);
 
 function convertItemsToJSON() {
@@ -349,7 +349,7 @@ function resetBag() {
     createdComponents.forEach((value) => {
         value.remove();
     });
-    modalWindow.querySelectorAll(".finalProduct").forEach((value) => {
+    modalWindow.querySelectorAll(".final-product").forEach((value) => {
         value.remove();
     });
     modalWindow.querySelectorAll("div").forEach((value) => {
@@ -369,10 +369,10 @@ function indicateSuccess(message) {
     modalWindow.style.animationPlayState = "running";
     setTimeout(() => {
         modalWindow.querySelector("p").remove();
-        modalWindow.style.animation = "0.2s ease-in-out paused indicateSuccess";
+        modalWindow.style.animation = "0.2s ease-in-out paused indicate-success";
         modalWindow.style.animationFillMode = "forwards";
         modalWindow.querySelectorAll("div").forEach((value) => {
-            if (value.id === "modalHeader") {
+            if (value.id === "modal-header") {
                 value.style.display = "flex";
             }
             else {
@@ -387,7 +387,7 @@ function indicateSuccess(message) {
 }
 
 function indicateFailure(message, statusCode) {
-    const errorBox = createElement("div", "finalProduct", null);
+    const errorBox = createElement("div", "final-product", null);
     errorBox.style.backgroundColor = "red";
     errorBox.style.color = "white";
     errorBox.style.textAlign = "center";
@@ -395,7 +395,7 @@ function indicateFailure(message, statusCode) {
     const errorMessage = createElement("p", null, message);
     errorBox.appendChild(statusHeader);
     errorBox.appendChild(errorMessage);
-    modalWindow.insertBefore(errorBox, document.getElementById("modalBtnWrapper"));
+    modalWindow.insertBefore(errorBox, document.getElementById("modal-btn-wrapper"));
     setTimeout(() => {
         errorBox.remove();
     }, 2000);

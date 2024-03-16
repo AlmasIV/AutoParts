@@ -15,7 +15,7 @@
         "sell"
     };
 }
-<main id="autoPartsTable">
+<main id="auto-parts-table">
     <table>
         <tr>
             <th id="@identifiers[0]">
@@ -53,36 +53,36 @@
                 <td headers="@identifiers[4]">@item.PriceInRubles</td>
                 <td headers="@identifiers[5]">@item.PriceInTenge</td>
                 <td headers="@identifiers[6]">@item.Amount</td>
-                <td data-product-id="@item.Id" headers="@identifiers[7]" class="btnCell addingBtn pointer" role="button" tabindex=0>
+                <td data-product-id="@item.Id" headers="@identifiers[7]" class="btn-cell addingBtn pointer" role="button" tabindex=0>
                     Add
                 </td>
             </tr>
         }
     </table>
 </main>
-<div id="modalContainer">
-    <div id="modalWindow">
-        <div id="modalHeader">
-            <span id="modalCloseIcon" class="headerIcon material-symbols-outlined" title="Cancel">
+<div id="modal-container">
+    <div id="modal-window">
+        <div id="modal-header">
+            <span id="modal-close-icon" class="header-icon material-symbols-outlined" title="Cancel">
             cancel
             </span>
-            <span id="modalClearIcon" class="headerIcon material-symbols-outlined" title="Clear selected items">
+            <span id="modal-clear-icon" class="header-icon material-symbols-outlined" title="Clear selected items">
             delete_forever
             </span>
         </div>
-        <div id="itemsWrapper"></div>
-        <div id="modalBtnWrapper">
-            <button class="primaryBtn finalSell">Sell</button>
+        <div id="items-wrapper"></div>
+        <div id="modal-btn-wrapper">
+            <button class="primary-btn final-sell">Sell</button>
         </div>
     </div>
 </div>
-<div id="bagWrapper">
-    <div id="bagInfo">
-        <p id="bagSummary">You have no products here.</p>
-        <button id="openModal" class="pointer" disabled title="You have no items to sell.">Proceed to sell</button>
+<div id="bag-wrapper">
+    <div id="bag-info">
+        <p id="bag-summary">You have no products here.</p>
+        <button id="open-modal" class="pointer" disabled title="You have no items to sell.">Proceed to sell</button>
     </div>
     <div id="bag" class="pointer">
-        <p>Selected Items <span id="bagCount">0</span></p>
+        <p>Selected Items <span id="bag-count">0</span></p>
     </div>
 </div>
 

@@ -24,13 +24,13 @@ public class AutoPart{
     public string? Company { get; set; }
 
 
-    [Range(0, int.MaxValue), DisplayName("Price(₽ - RUB)")]
+    [DisplayName("Price(₽ - RUB)"), Range(0, 2_000_000)]
     [JsonPropertyName("priceInRubles")]
     [Column(TypeName = "decimal(10, 2)")]
     public decimal PriceInRubles { get; set; }
 
 
-    [Range(0, int.MaxValue), DisplayName("Price(₸ - KZT)")]
+    [DisplayName("Price(₸ - KZT)"), Required(), Range(0, 2_000_000)]
     [JsonPropertyName("priceInTenge")]
     [Column(TypeName = "decimal(10, 2)")]
     public decimal PriceInTenge { get; set; }

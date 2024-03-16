@@ -2,7 +2,7 @@
 
 "use strict";
 
-const historyContainer = document.getElementById("historyContainer");
+const historyContainer = document.getElementById("history-container");
 const details = historyContainer.lastElementChild;
 const listOfOrders = historyContainer.firstElementChild;
 
@@ -76,11 +76,11 @@ function toggleDetailedInfo(id, orderDetails, clickedDiv) {
         displayDetails(id, orderDetails);
     }
     if (currentSelectedItem instanceof HTMLElement) {
-        currentSelectedItem.classList.remove("selectedItem");
+        currentSelectedItem.classList.remove("selected-item");
     }
     if (requestedOrderId.isEnabled) {
         currentSelectedItem = clickedDiv;
-        currentSelectedItem.classList.add("selectedItem");
+        currentSelectedItem.classList.add("selected-item");
     }
 }
 
@@ -98,7 +98,7 @@ function displayDetails(id, order) {
     detailsWrapperDiv = document.createElement("div");
 
     let orderId = createDescriptionElement("p", "Order " + id);
-    orderId.id = "orderId";
+    orderId.id = "order-id";
     detailsWrapperDiv.appendChild(orderId);
     let autoPart;
     let element;

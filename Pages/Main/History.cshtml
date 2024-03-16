@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="~/css/history.css" />
 }
 <main>
-    <div id="historyContainer">
+    <div id="history-container">
         <div id="list">
             @if(Model.Orders!.Any()){
                 foreach (Order order in Model.Orders!)
                 {
-                    <div id="@order.Id" class="productContainer">
+                    <div id="@order.Id" class="product-container">
                         <p>@order.CreatedOn.ToLocalTime()</p>
                         <p>Total Price: @order.TotalPrice</p>
                         <p>Count: @order.Count</p>
@@ -24,4 +24,4 @@
     </div>
 </main>
 
-<script src="~/js/orderHistory.js"></script>
+<script src="~/js/history.js"></script>

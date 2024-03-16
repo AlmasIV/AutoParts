@@ -1,11 +1,11 @@
-// This JS file is used in the Products page.
+// This JS file is used in the UpdateProduct page.
 
 "use strict";
 
 import { hasAnyUnique, allValid, inputs } from "./autoPartValidation.js";
 
-const editBtn = document.getElementById("editBtn");
-const deleteBtn = document.getElementById("deleteBtn");
+const editBtn = document.getElementById("edit-btn");
+const deleteBtn = document.getElementById("delete-btn");
 
 const editTimerIdDictionary = new Map();
 
