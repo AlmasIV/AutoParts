@@ -18,7 +18,7 @@ function Result(isValid, message){
 
 function validateInputString(str){
     if(typeof str !== "string"){
-        throw new Error("The input must be a string. It was " + typeof(str) + ".");
+        throw new TypeError(`'str' must be a string. It was '${typeof str}'.`);
     }
     if(str.length < 3){
         return new Result(false, "The input's minimal length is 3.");
@@ -40,9 +40,6 @@ function validateInputString(str){
 export const inputs = [...document.querySelectorAll("div.input-container label + input")];
 const errorSpans = [...document.querySelectorAll("div.input-container input + span.error-message")];
 
-errorSpans.forEach((element) => {
-    console.log(element);
-});
 const initialValues = [];
 
 const inputTimerIdDictionary = new Map();
@@ -59,13 +56,15 @@ for(i = 0; i < 3; i ++){
 }
 
 function initializeStringValidation(event){
-    let input, result;
+    let input, result, isSame;
     input = event.target;
     clearTimeout(inputTimerIdDictionary.get(input.name));
     inputTimerIdDictionary.set(input.name, setTimeout(() => {
         result = validateInputString(input.value);
-        if(result.isValid){
-            if(initialValues[inputs.indexOf(input)] !== input.value){
+        isSame = initialValues[inputs.indexOf(input)] === input.value;
+        if(result.isValid || isSame){
+            errorSpans[inputs.indexOf(input)].textContent = "";
+            if(!isSame){
                 indicateSuccess(input);
             }
             else{
@@ -73,8 +72,7 @@ function initializeStringValidation(event){
             }
         }
         else{
-            console.log(result.message);
-            indicateFailure(input);
+            indicateFailure(input, result.message);
         }
     }, 250));
 }
@@ -84,9 +82,10 @@ function indicateSuccess(input){
     input.classList.add("success");
 }
 
-function indicateFailure(input){
+function indicateFailure(input, errorMessage){
     input.classList.remove("success");
     input.classList.add("failure");
+    errorSpans[inputs.indexOf(input)].textContent = errorMessage;
 }
 
 function indicateInitial(input){

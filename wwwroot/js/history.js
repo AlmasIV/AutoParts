@@ -51,7 +51,7 @@ async function getProduct(event) {
             toggleDetailedInfo(id, response, clickedItem);
         }
         else {
-            throw new Error(`The ${id} is not a number.`);
+            throw new TypeError(`The ${id} is not a number.`);
         }
     }
     catch (error) {
