@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AutoParts.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class RecreatedManually : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace AutoParts.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Applicability = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Company = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Company = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "Unknown"),
                     PriceInRubles = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     PriceInTenge = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Amount = table.Column<short>(type: "smallint", nullable: false)

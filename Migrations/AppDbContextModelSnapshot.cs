@@ -41,7 +41,9 @@ namespace AutoParts.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "applicability");
 
                     b.Property<string>("Company")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Unknown")
                         .HasAnnotation("Relational:JsonPropertyName", "company");
 
                     b.Property<string>("Name")

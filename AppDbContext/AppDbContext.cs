@@ -30,5 +30,9 @@ public class AppDbContext : DbContext{
         modelBuilder.Entity<Order>()
             .Property(x => x.CreatedOn)
             .HasDefaultValueSql("SYSUTCDATETIME()");
+
+        modelBuilder.Entity<AutoPart>()
+            .Property(a => a.Company)
+            .HasDefaultValue("Unknown");
     }
 }

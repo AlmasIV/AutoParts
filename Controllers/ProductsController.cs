@@ -31,6 +31,15 @@ public class ProductsController : Controller
         }
         return Json(order.AutoPartSoldAmount);
     }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteProduct(int id){
+        if(id <= 0){
+            return GetJsonResponseMessage($"The ID can't be equal to or less than 0. ID = {id}", StatusCodes.Status400BadRequest);
+        }
+        Console.WriteLine("Deleting the product ID: " + id);
+        return GetJsonResponseMessage("Successfully deleted an item.", StatusCodes.Status200OK);
+    }
     
     [HttpPut()]
     public IActionResult Sell([FromBody] OrderSummary order)

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoParts.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240204140631_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240316063526_RecreatedManually")]
+    partial class RecreatedManually
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,7 +44,9 @@ namespace AutoParts.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "applicability");
 
                     b.Property<string>("Company")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Unknown")
                         .HasAnnotation("Relational:JsonPropertyName", "company");
 
                     b.Property<string>("Name")

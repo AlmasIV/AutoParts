@@ -1,6 +1,6 @@
 /* Styles that are used in the Products/{id} page. */
 .description {
-    margin-top: 10vh;
+    margin: 10vh 0;
     padding: 2vh;
     border-radius: 2vh;
     background-color: rgb(206, 206, 206);
@@ -31,7 +31,7 @@
     background-color: black;
 }
 #editBtn:not([disabled]):hover {
-    color: violet;
+    color: greenyellow;
 }
 
 #editBtn:disabled {
@@ -46,22 +46,15 @@
     background-color: red;
     color: white;
 }
-
-input {
-    border: 0.2vh solid black;
-    padding: 0.4vh 0.5vh;
-    margin-top: 0.4vh;
-    box-sizing: border-box;
-    outline: none;
-}
-input:focus {
-    box-shadow: 0.2vh 0.2vh 0.5vh 0.5vh violet;
-}
-
-.editInput {
+#updatedState form div.input-container {
     margin-top: 2vh;
 }
-
-label {
-    font-size: 1.5rem;
+#updatedState form div.input-container label {
+    width: auto;
+    display: inline-block;
+    margin-bottom: 1.5vh;
+}
+#updatedState form div.input-container label + input {
+    padding: 0.5vh 1vh;
+    box-sizing: border-box;
 }

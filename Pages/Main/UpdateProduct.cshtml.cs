@@ -8,24 +8,24 @@ using AutoParts.Models;
 
 namespace AutoParts.Pages
 {
-    public class ProductsModel : PageModel
+    public class UpdateProductModel : PageModel
     {
         private readonly AppDbContext _dbContext;
-        public AutoPart? requestedPart = null;
-        public ProductsModel(AppDbContext dbContext){
+        public AutoPart? AutoPart;
+        public UpdateProductModel(AppDbContext dbContext){
             _dbContext = dbContext;
         }
         public IActionResult OnGet(int id)
         {
-            requestedPart = _dbContext.AutoParts.AsNoTracking().FirstOrDefault(a => a.Id == id);
-            if(requestedPart is null){
+            AutoPart = _dbContext.AutoParts.AsNoTracking().FirstOrDefault(a => a.Id == id);
+            if(AutoPart is null){
                 return new NotFoundResult();
             }
             return Page();
         }
 
-        public IActionResult OnPost(int id){
-            Console.WriteLine("Everything is fine!");
+        public IActionResult OnPost(AutoPart? autoPart){
+            Console.WriteLine("Everything is OK: " + autoPart?.Name);
             return new OkResult();
         }
     }

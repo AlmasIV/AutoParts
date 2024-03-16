@@ -12,12 +12,13 @@ public class AutoPart{
 
     [Required(), MinLength(3)]
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
 
     [Required(), MinLength(3)]
     [JsonPropertyName("applicability")]
-    public string Applicability { get; set; }
+    public string Applicability { get; set; } = null!;
+
 
     [JsonPropertyName("company")]
     public string? Company { get; set; }
@@ -39,8 +40,11 @@ public class AutoPart{
     [JsonPropertyName("amount")]
     public short Amount { get; set; }
 
+
     [JsonIgnore]
     public List<Order>? Orders { get; set; }
+
+    
     [JsonIgnore]
     public List<AutoPartOrder>? AutoPartOrders { get; set; }
 }

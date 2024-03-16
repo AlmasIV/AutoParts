@@ -31,8 +31,18 @@ main {
     width: 100%;
     font-size: 1.5rem;
 }
+.input-container label + input {
+    padding: 0.5vh 1vh;
+    box-sizing: border-box;
+}
 .input-container, .btn-container {
     margin-top: 3rem;
+}
+.success {
+    box-shadow: 0.2vh 0.2vh 0.5vh 0.5vh greenyellow;
+}
+.failure {
+    box-shadow: 0.2vh 0.2vh 0.5vh 0.5vh red;
 }
 .btn-container {
     margin-bottom: 3rem;
