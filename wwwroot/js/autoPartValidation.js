@@ -20,11 +20,11 @@ function validateInputString(str){
     if(typeof str !== "string"){
         throw new TypeError(`'str' must be a string. It was '${typeof str}'.`);
     }
-    if(str.length < 3){
-        return new Result(false, "The input's minimal length is 3.");
-    }
     if(str.startsWith(" ") || str.endsWith(" ")){
         return new Result(false, "The input cannot start or end with whitespace.");
+    }
+    if(str.length < 3){
+        return new Result(false, "The input's minimal length is 3.");
     }
     let letter;
     for(letter of str){
@@ -34,7 +34,31 @@ function validateInputString(str){
             }
         }
     }
-    return new Result(true, "Validation successful.");
+    return new Result(true, "");
+}
+
+function validateInputPrice(price, minimalPrice){
+    if(!/^[1-9][0-9]*$/.test(price)){
+        return new Result(false, "Please enter a valid number.");
+    }
+    price = Number(price);
+    if(Number.isNaN(price) || !Number.isFinite(price)){
+        throw new TypeError("The 'price' must be a valid number.");
+    }
+    if(price < minimalPrice){
+        return new Result(false, `The price must be at least ${minimalPrice}.`);
+    }
+    return new Result(true, "");
+}
+
+function validateInputAmount(amount){
+    if(!/^[1-9][0-9]*$/.test(amount)){
+        return new Result(false, "Please enter a valid number.");
+    }
+    if(amount < 0){
+        return new Result(false, "The amount cannot be a negative number.");
+    }
+    return new Result(true, "");
 }
 
 export const inputs = [...document.querySelectorAll("div.input-container label + input")];
@@ -51,17 +75,32 @@ inputs.forEach((input) => {
 
 // Validate string inputs.
 let i;
-for(i = 0; i < 3; i ++){
-    inputs[i].addEventListener("input", initializeStringValidation);
+for(i = 0; i < 6; i ++){
+    inputs[i].addEventListener("input", initializeValidation);
 }
 
-function initializeStringValidation(event){
+function initializeValidation(event){
     let input, result, isSame;
     input = event.target;
     clearTimeout(inputTimerIdDictionary.get(input.name));
     inputTimerIdDictionary.set(input.name, setTimeout(() => {
-        result = validateInputString(input.value);
-        isSame = initialValues[inputs.indexOf(input)] === input.value;
+        switch(inputs.indexOf(input)){
+            case 0:
+            case 1:
+            case 2:
+                result = validateInputString(input.value);
+                isSame = initialValues[inputs.indexOf(input)] === input.value;
+                break;
+            case 3:
+            case 4:
+                result = validateInputPrice(input.value, input.getAttribute("min"));
+                isSame = Number(initialValues[inputs.indexOf(input)]) === Number(input.value);
+                break;
+            case 5:
+                result = validateInputAmount(input.value);
+                isSame = Number(initialValues[inputs.indexOf(input)]) === Number(input.value);
+                break;
+        }
         if(result.isValid || isSame){
             errorSpans[inputs.indexOf(input)].textContent = "";
             if(!isSame){
