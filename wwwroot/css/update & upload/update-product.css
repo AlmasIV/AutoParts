@@ -9,6 +9,11 @@
     position: relative;
 }
 
+.detail {
+    background-color: greenyellow;
+    border-radius: 2vh;
+}
+
 .description > div {
     flex-basis: 50%;
 }
