@@ -47,7 +47,6 @@ async function getProduct(event) {
                 }
             }
             response = productDetailCache.get(id);
-            console.log(response);
             toggleDetailedInfo(id, response, clickedItem);
         }
         else {

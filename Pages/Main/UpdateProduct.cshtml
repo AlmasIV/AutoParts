@@ -26,6 +26,7 @@
         </div>
         <div id="updated-state">
             <form id="update-form" method="post" asp-antiforgery="true" asp-action="/Main/Upload">
+                <input type="hidden" asp-for="AutoPart!.Id" value="@part.Id">
                 <div class="input-container">
                     <label asp-for="AutoPart!.Name" class="detail"></label>
                     <input asp-for="AutoPart!.Name" value="@part.Name" minlength="3" required placeholder="This is a required field">
@@ -43,17 +44,17 @@
                 </div>
                 <div class="input-container">
                     <label asp-for="AutoPart!.PriceInRubles" class="detail"></label>
-                    <input asp-for="AutoPart!.PriceInRubles" value="@part.PriceInRubles" type="number" step="500.00" min="0">
+                    <input asp-for="AutoPart!.PriceInRubles" value="@part.PriceInRubles" type="number" min="0" max="99999999.99">
                     <span class="error-message" asp-validation-for="AutoPart!.PriceInRubles"></span>
                 </div>
                 <div class="input-container">
                     <label asp-for="AutoPart!.PriceInTenge" class="detail"></label>
-                    <input asp-for="AutoPart!.PriceInTenge" value="@part.PriceInTenge" type="number" value="100" step="500.00" min="100" required placeholder="This is a required field">
+                    <input asp-for="AutoPart!.PriceInTenge" value="@part.PriceInTenge" type="number" value="100" min="100" max="99999999.99" required placeholder="This is a required field">
                     <span class="error-message" asp-validation-for="AutoPart!.PriceInTenge"></span>
                 </div>
                 <div class="input-container">
                     <label asp-for="AutoPart!.Amount" class="detail"></label>
-                    <input asp-for="AutoPart!.Amount" value="@part.Amount" type="number" min="0">
+                    <input asp-for="AutoPart!.Amount" value="@part.Amount" type="number" min="0" max="65535">
                     <span class="error-message" asp-validation-for="AutoPart!.Amount"></span>
                 </div>
             </form>

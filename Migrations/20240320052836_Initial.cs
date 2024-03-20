@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AutoParts.Migrations
 {
     /// <inheritdoc />
-    public partial class RecreatedManually : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,7 @@ namespace AutoParts.Migrations
                     Company = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "Unknown"),
                     PriceInRubles = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     PriceInTenge = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Amount = table.Column<short>(type: "smallint", nullable: false)
+                    Amount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

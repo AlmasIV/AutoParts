@@ -26,17 +26,17 @@
         </div>
         <div class="input-container">
             <label asp-for="AutoPart.PriceInRubles"></label>
-            <input asp-for="AutoPart.PriceInRubles" value="0" type="number" step="500.00" min="0">
+            <input asp-for="AutoPart.PriceInRubles" value="0" type="number"  min="0" max="99999999.99">
             <span class="error-message" asp-validation-for="AutoPart.PriceInRubles"></span>
         </div>
         <div class="input-container">
             <label asp-for="AutoPart.PriceInTenge"></label>
-            <input asp-for="AutoPart.PriceInTenge" type="number" value="100" step="500.00" min="100" required placeholder="This is a required field">
+            <input asp-for="AutoPart.PriceInTenge" type="number" value="100" min="100" max="99999999.99" required placeholder="This is a required field">
             <span class="error-message" asp-validation-for="AutoPart.PriceInTenge"></span>
         </div>
         <div class="input-container">
             <label asp-for="AutoPart.Amount"></label>
-            <input asp-for="AutoPart.Amount" value="0" type="number" min="0">
+            <input asp-for="AutoPart.Amount" value="0" type="number" min="0" max="65535">
             <span class="error-message" asp-validation-for="AutoPart.Amount"></span>
         </div>
         <div class="btn-container">

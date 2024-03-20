@@ -2,26 +2,34 @@
 @using AutoParts.Models
 @model AutoParts.Pages.HistoryModel
 @{
+    bool anyOrder = Model.Orders!.Count > 0;
 }
 @section Styles {
     <link rel="stylesheet" href="~/css/history.css" />
 }
 <main>
-    <div id="history-container">
-        <div id="list">
-            @if(Model.Orders!.Any()){
-                foreach (Order order in Model.Orders!)
-                {
-                    <div id="@order.Id" class="product-container">
-                        <p>@order.CreatedOn.ToLocalTime()</p>
-                        <p>Total Price: @order.TotalPrice</p>
-                        <p>Count: @order.Count</p>
-                    </div>
+    @if(anyOrder){
+        <div id="history-container">
+            <div id="list">
+                @if(Model.Orders!.Any()){
+                    foreach (Order order in Model.Orders!)
+                    {
+                        <div id="@order.Id" class="product-container">
+                            <p>@order.CreatedOn.ToLocalTime()</p>
+                            <p>Total Price: @order.TotalPrice</p>
+                            <p>Count: @order.Count</p>
+                        </div>
+                    }
                 }
-            }
+            </div>
+            <div class="details"></div>
         </div>
-        <div class="details"></div>
-    </div>
+    }
+    else{
+        <h1 class="main-message">There were no orders</h1>
+    }
 </main>
 
-<script src="~/js/history.js"></script>
+@if(anyOrder){
+    <script src="~/js/history.js"></script>
+}

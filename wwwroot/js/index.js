@@ -306,7 +306,7 @@ function convertItemsToJSON() {
             id: key,
             name: value.name,
             applicability: value.applicability,
-            company: value.company === "Unknown" ? null : value.company,
+            company: value.company,
             priceInTenge: value.priceInTenge,
             priceInRubles: value.priceInRubles,
             amount: value.amount
@@ -314,7 +314,6 @@ function convertItemsToJSON() {
         totalPrice += singleItem.priceInTenge * singleItem.amount;
         collectionOfItems.push(singleItem);
     });
-    console.log("Sending " + totalPrice);
     return JSON.stringify({ orderedParts: collectionOfItems, totalPrice });
 }
 

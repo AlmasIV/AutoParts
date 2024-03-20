@@ -31,8 +31,8 @@ namespace AutoParts.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<short>("Amount")
-                        .HasColumnType("smallint")
+                    b.Property<int>("Amount")
+                        .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "amount");
 
                     b.Property<string>("Applicability")

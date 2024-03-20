@@ -24,8 +24,23 @@ namespace AutoParts.Pages
         }
 
         public IActionResult OnPost(AutoPart? autoPart){
-            Console.WriteLine("Everything is OK: " + autoPart?.Name);
-            return new OkResult();
+            if(autoPart is null){
+                return new BadRequestResult();
+            }
+            if(ModelState.IsValid){
+                AutoPart? originalPart = _dbContext.AutoParts.AsNoTracking().FirstOrDefault(ap => ap.Id == autoPart.Id);
+
+                if(originalPart is null){
+                    return new NotFoundResult();
+                }
+
+                _dbContext.AutoParts.Update(autoPart);
+
+                _dbContext.SaveChanges();
+                
+                return RedirectToPage("../Index");
+            }
+            return Page();
         }
     }
 }

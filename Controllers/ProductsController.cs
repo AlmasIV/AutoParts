@@ -79,6 +79,9 @@ public class ProductsController : Controller
                 }
                 else
                 {
+                    Console.WriteLine(
+                        $"Company: '{temp.Company}' & '{orderedPart.Company}'\n" + $"Applicability: '{temp.Applicability}' & '{orderedPart.Applicability}'\n" + $"Name: '{temp.Name}' & '{orderedPart.Name}'\n" + $"Price in RUB: '{temp.PriceInRubles}' & '{orderedPart.PriceInRubles}'\n" + $"Price in KZT: '{temp.PriceInTenge}' & '{orderedPart.PriceInTenge}'\n"
+                    );
                     return GetJsonResponseMessage($"Inconsistency with the original data. (Requested Product: Name: '{orderedPart.Name}', ID: {orderedPart.Id}).", StatusCodes.Status409Conflict);
                 }
             }

@@ -37,26 +37,9 @@ function validateInputString(str){
     return new Result(true, "");
 }
 
-function validateInputPrice(price, minimalPrice){
-    if(!/^[1-9][0-9]*$/.test(price)){
-        return new Result(false, "Please enter a valid number.");
-    }
-    price = Number(price);
-    if(Number.isNaN(price) || !Number.isFinite(price)){
-        throw new TypeError("The 'price' must be a valid number.");
-    }
-    if(price < minimalPrice){
-        return new Result(false, `The price must be at least ${minimalPrice}.`);
-    }
-    return new Result(true, "");
-}
-
-function validateInputAmount(amount){
-    if(!/^[1-9][0-9]*$/.test(amount)){
-        return new Result(false, "Please enter a valid number.");
-    }
-    if(amount < 0){
-        return new Result(false, "The amount cannot be a negative number.");
+function validateInputNumber(number, minimalNumber, maxNumber){
+    if(number.length === 0 || !/^\d{0,8}(?:\.\d{1,2})?$/.test(number) || Number(number) < minimalNumber || Number(number) > maxNumber){
+        return new Result(false, `The input must contain numbers (possibly with a fraction up to 2 decimal points) only between ${minimalNumber} and ${maxNumber}.`);
     }
     return new Result(true, "");
 }
@@ -93,15 +76,12 @@ function initializeValidation(event){
                 break;
             case 3:
             case 4:
-                result = validateInputPrice(input.value, input.getAttribute("min"));
-                isSame = Number(initialValues[inputs.indexOf(input)]) === Number(input.value);
-                break;
             case 5:
-                result = validateInputAmount(input.value);
+                result = validateInputNumber(input.value, input.getAttribute("min"), input.getAttribute("max"));
                 isSame = Number(initialValues[inputs.indexOf(input)]) === Number(input.value);
                 break;
         }
-        if(result.isValid || isSame){
+        if(result.isValid){
             errorSpans[inputs.indexOf(input)].textContent = "";
             if(!isSame){
                 indicateSuccess(input);

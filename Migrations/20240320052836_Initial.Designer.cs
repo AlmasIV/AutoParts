@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoParts.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240316063526_RecreatedManually")]
-    partial class RecreatedManually
+    [Migration("20240320052836_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,8 +34,8 @@ namespace AutoParts.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<short>("Amount")
-                        .HasColumnType("smallint")
+                    b.Property<int>("Amount")
+                        .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "amount");
 
                     b.Property<string>("Applicability")
