@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using AutoParts.Models;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoParts.WebApi;
 
+[Authorize]
 [Route("api/products")]
 public class ProductsController : Controller
 {

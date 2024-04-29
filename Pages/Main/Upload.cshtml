@@ -1,43 +1,44 @@
 ﻿@page
-@model AutoParts.Pages.UploadModel
+@model AutoParts.Pages.Main.UploadModel
 @{
+    ViewData["Title"] = "Upload Product";
 }
 @section Styles {
-    <link rel="stylesheet" href="~/css/update & upload/upload.css">
-    <link rel="stylesheet" href="~/css/update & upload/generic.css">
+    <link rel="stylesheet" href="~/css/input-generic.css">
 }
 <main>
     <h1>Add a new type of auto part</h1>
     <form method="post" asp-antiforgery="true" asp-action="/Main/Upload">
+        <div asp-validation-summary="All"></div>
         <div class="input-container">
-            <label asp-for="AutoPart.Name"></label>
-            <input asp-for="AutoPart.Name" minlength="3" required placeholder="This is a required field">
-            <span class="error-message" asp-validation-for="AutoPart.Name"></span>
+            <label asp-for="AutoPart!.Name"></label>
+            <input asp-for="AutoPart!.Name" minlength="3" required placeholder="This is a required field">
+            <span class="error-message" asp-validation-for="AutoPart!.Name"></span>
         </div>
         <div class="input-container">
-            <label asp-for="AutoPart.Applicability"></label>
-            <input asp-for="AutoPart.Applicability" minlength="3" required placeholder="This is a required field">
-            <span class="error-message" asp-validation-for="AutoPart.Applicability"></span>
+            <label asp-for="AutoPart!.Applicability"></label>
+            <input asp-for="AutoPart!.Applicability" minlength="3" required placeholder="This is a required field">
+            <span class="error-message" asp-validation-for="AutoPart!.Applicability"></span>
         </div>
         <div class="input-container">
-            <label asp-for="AutoPart.Company"></label>
-            <input asp-for="AutoPart.Company">
-            <span class="error-message" asp-validation-for="AutoPart.Company"></span>
+            <label asp-for="AutoPart!.Company"></label>
+            <input asp-for="AutoPart!.Company">
+            <span class="error-message" asp-validation-for="AutoPart!.Company"></span>
         </div>
         <div class="input-container">
-            <label asp-for="AutoPart.PriceInRubles"></label>
-            <input asp-for="AutoPart.PriceInRubles" value="0" type="number"  min="0" max="99999999.99">
-            <span class="error-message" asp-validation-for="AutoPart.PriceInRubles"></span>
+            <label asp-for="AutoPart!.PriceInRubles"></label>
+            <input asp-for="AutoPart!.PriceInRubles" value="0" type="number"  min="0" max="99999999.99">
+            <span class="error-message" asp-validation-for="AutoPart!.PriceInRubles"></span>
         </div>
         <div class="input-container">
-            <label asp-for="AutoPart.PriceInTenge"></label>
-            <input asp-for="AutoPart.PriceInTenge" type="number" value="100" min="100" max="99999999.99" required placeholder="This is a required field">
-            <span class="error-message" asp-validation-for="AutoPart.PriceInTenge"></span>
+            <label asp-for="AutoPart!.PriceInTenge"></label>
+            <input asp-for="AutoPart!.PriceInTenge" type="number" value="100" min="100" max="99999999.99" required placeholder="This is a required field">
+            <span class="error-message" asp-validation-for="AutoPart!.PriceInTenge"></span>
         </div>
         <div class="input-container">
-            <label asp-for="AutoPart.Amount"></label>
-            <input asp-for="AutoPart.Amount" value="0" type="number" min="0" max="65535">
-            <span class="error-message" asp-validation-for="AutoPart.Amount"></span>
+            <label asp-for="AutoPart!.Amount"></label>
+            <input asp-for="AutoPart!.Amount" value="0" type="number" min="0" max="65535">
+            <span class="error-message" asp-validation-for="AutoPart!.Amount"></span>
         </div>
         <div class="btn-container">
             <button type="submit">Add</button>

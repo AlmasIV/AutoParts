@@ -1,0 +1,29 @@
+@page
+@model AutoParts.Pages.Identity.LogInModel
+@{
+    ViewData["Title"] = "Login";
+}
+<main>
+    <header class="identity-header">
+        <h1>Log In</h1>
+        <hr>
+    </header>
+    <form method="post" asp-antiforgery="true" asp-action="/Identity/LogIn">
+        <div class="error-box" asp-validation-summary="All"></div>
+        <div class="input-container">
+            <label asp-for="Email!">Email</label>
+            <input asp-for="Email!" type="email" required placeholder="Your email">
+            <span class="error-message" asp-validation-for="Email!"></span>
+        </div>
+        <div class="input-container">
+            <label asp-for="Password!">Password</label>
+            <input asp-for="Password!" type="password" required placeholder="Your password">
+            <span class="error-message" asp-validation-for="Password!"></span>
+        </div>
+        <div class="btn-container">
+            <button type="submit">Log In</button>
+            <button type="reset">Reset</button>
+        </div>
+        <p>Don't have an account? <a asp-page="/Identity/Register">Register!</a></p>
+    </form>
+</main>

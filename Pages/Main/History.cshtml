@@ -1,7 +1,8 @@
 ﻿@page
 @using AutoParts.Models
-@model AutoParts.Pages.HistoryModel
+@model AutoParts.Pages.Main.HistoryModel
 @{
+    ViewData["Title"] = "History";
     bool anyOrder = Model.Orders!.Count > 0;
 }
 @section Styles {

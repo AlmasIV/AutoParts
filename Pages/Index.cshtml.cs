@@ -8,12 +8,13 @@ namespace AutoParts.Pages;
 public class IndexModel : PageModel
 {
     private readonly AppDbContext _dbContext;
-    [BindNever]
-    public List<AutoPart> AutoParts { get; set; } = null!;
     public IndexModel(AppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
+
+    [BindNever]
+    public List<AutoPart> AutoParts { get; set; } = null!;
 
     public IActionResult OnGet()
     {

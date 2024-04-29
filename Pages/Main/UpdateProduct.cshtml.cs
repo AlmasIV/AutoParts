@@ -1,46 +1,45 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 using Microsoft.EntityFrameworkCore;
 
 using AutoParts.Models;
 
-namespace AutoParts.Pages
+namespace AutoParts.Pages.Main;
+public class UpdateProductModel : PageModel
 {
-    public class UpdateProductModel : PageModel
+    private readonly AppDbContext _dbContext;
+    public UpdateProductModel(AppDbContext dbContext){
+        _dbContext = dbContext;
+    }
+    public IActionResult OnGet(int id)
     {
-        private readonly AppDbContext _dbContext;
-        public AutoPart? AutoPart;
-        public UpdateProductModel(AppDbContext dbContext){
-            _dbContext = dbContext;
+        AutoPart? autoPart = _dbContext.AutoParts.AsNoTracking().FirstOrDefault(a => a.Id == id);
+        if(autoPart is null){
+            return new NotFoundResult();
         }
-        public IActionResult OnGet(int id)
-        {
-            AutoPart = _dbContext.AutoParts.AsNoTracking().FirstOrDefault(a => a.Id == id);
-            if(AutoPart is null){
+        ViewData[nameof(AutoPart)] = autoPart;
+        return Page();
+    }
+
+    [Required]
+    [BindProperty]
+    public AutoPart? AutoPart { get; set; }
+    public IActionResult OnPost(){
+        if(ModelState.IsValid){
+            AutoPart? originalPart = _dbContext.AutoParts.AsNoTracking().FirstOrDefault(ap => ap.Id == AutoPart!.Id);
+
+            if(originalPart is null){
                 return new NotFoundResult();
             }
-            return Page();
+
+            _dbContext.AutoParts.Update(AutoPart!);
+
+            _dbContext.SaveChanges();
+            
+            return RedirectToPage("../Index");
         }
-
-        public IActionResult OnPost(AutoPart? autoPart){
-            if(autoPart is null){
-                return new BadRequestResult();
-            }
-            if(ModelState.IsValid){
-                AutoPart? originalPart = _dbContext.AutoParts.AsNoTracking().FirstOrDefault(ap => ap.Id == autoPart.Id);
-
-                if(originalPart is null){
-                    return new NotFoundResult();
-                }
-
-                _dbContext.AutoParts.Update(autoPart);
-
-                _dbContext.SaveChanges();
-                
-                return RedirectToPage("../Index");
-            }
-            return Page();
-        }
+        return Page();
     }
 }

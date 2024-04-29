@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AutoParts
+namespace AutoParts.Pages.Main;
+public class ErrorModel : PageModel
 {
-    public class Error : PageModel
+    public IActionResult OnGet(string? statusCode)
     {
-        public IActionResult OnGet(string? statusCode)
-        {
-            Console.WriteLine($"Here's the status code: {statusCode}" + statusCode);
-            return Page();
-        }
+        Console.WriteLine($"Here's the status code: {statusCode}" + statusCode);
+        return Page();
     }
 }

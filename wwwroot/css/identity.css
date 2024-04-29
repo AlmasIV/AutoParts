@@ -1,0 +1,18 @@
+/*
+    Used in _IdentityLayout.cshtml.
+*/
+
+main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.identity-header {
+    padding-top: 1rem;
+}
+
+.identity-header hr {
+    margin-top: 1rem;
+}

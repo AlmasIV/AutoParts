@@ -1,0 +1,248 @@
+/*
+    Styles that are used in the Index page.
+*/
+
+main#auto-parts-table {
+    width: 99%;
+}
+
+table {
+    width: 100%;
+    margin-top: 5vh;
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 5vh;
+}
+
+table,
+th,
+td {
+    border: 0.2vh solid black;
+    border-collapse: collapse;
+}
+
+td,
+th {
+    padding: 1vh;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(206, 206, 206);
+}
+
+td.btn-cell:not([disable]) {
+    background-color: rgb(188, 255, 188);
+    font-size: 1.4rem;
+    transition: 0.5s;
+}
+
+td.btn-cell:not([disable]):hover {
+    font-size: 1.4rem;
+    background-color: rgb(0, 255, 0);
+    font-weight: bolder;
+}
+
+td.btn-cell[disable] {
+    background-color: rgb(120, 205, 120);
+    cursor: not-allowed;
+}
+
+/*Product bag styles.*/
+#bag-wrapper {
+    position: fixed;
+    bottom: 0.5vh;
+    right: 0.5vw;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+#bag-summary {
+    display: none;
+    padding: 1vh;
+    max-height: 65vh;
+    background-color: rgb(116, 116, 116);
+    color: white;
+}
+
+#bag {
+    width: 15vw;
+    height: 5vh;
+    background-color: black;
+    line-height: 5vh;
+    box-sizing: border-box;
+    transition: all 0.5s;
+}
+
+#bag p {
+    color: white;
+    font-size: 1.5rem;
+}
+
+#bag:hover,
+#bag.active-bag {
+    height: 7vh;
+    line-height: 7vh;
+    width: 20vw;
+}
+
+#bag:active {
+    background-color: purple;
+    transition: 0s;
+}
+
+#bag-info {
+    max-height: 50vh;
+    overflow-y: auto;
+    max-width: 20vw;
+    display: none;
+}
+
+#open-modal {
+    width: 100%;
+    border: none;
+    padding: 1.5vh;
+    background-color: black;
+    font-size: 1.2rem;
+    box-sizing: border-box;
+    margin-bottom: 2vh;
+    color: white;
+    transition: 0.5s;
+}
+
+#open-modal:disabled {
+    background-color: rgb(77, 77, 77);
+    cursor: not-allowed;
+}
+
+#open-modal:hover:not(:disabled) {
+    margin-top: 1vh;
+    border-radius: 2.5vh;
+    color: rgb(0, 255, 0);
+}
+
+/* Modal Window Styles. */
+#modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0, 0.5);
+    z-index: 1;
+    display: none;
+}
+
+#modal-window {
+    position: relative;
+    width: 50%;
+    height: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0.4vh 0.4vh 0.5vh black;
+    font-size: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    animation: 0.2s ease-in-out paused indicate-success;
+    animation-fill-mode: forwards;
+}
+
+#modal-header {
+    padding: 0.25vh 2vh;
+    display: flex;
+    height: 3.8vh;
+    background-color: black;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#items-wrapper {
+    overflow-y: auto;
+}
+
+.final-product {
+    margin: 2vh 1.5vh 0;
+    padding: 0.5vh;
+    border: 0.2vh solid black;
+    background-color: rgb(206, 206, 206);
+}
+
+#modal-btn-wrapper {
+    width: 100%;
+    margin-top: 2vh;
+    order: 2;
+    align-self: flex-end;
+}
+
+.primary-btn {
+    padding: 0.5vh;
+    height: 5vh;
+    width: 5vw;
+    font-size: 1.4rem;
+    border: none;
+    background-color: black;
+    color: white;
+    transition: 0.5s;
+}
+
+.primary-btn:hover {
+    border-radius: 2.5vh;
+    color: rgb(0, 255, 0);
+}
+
+.final-sell {
+    width: 100%;
+}
+
+/* Icons.*/
+.header-icon {
+    color: white;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.header-icon:hover {
+    color: violet;
+}
+
+.remove-from-bag-icon {
+    position: absolute;
+    bottom: 0.2vh;
+    right: 0.2vh;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.remove-from-bag-icon:hover {
+    color: red;
+    font-size: 2rem;
+}
+
+.main-message {
+    text-align: center;
+    opacity: 0.5;
+}
+
+/* Successfully purchase. */
+.receipt {
+    align-self: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@keyframes indicate-success {
+    0% {
+        width: 50%;
+        height: 50%;
+    }
+
+    100% {
+        width: 25%;
+        height: 5vh;
+        background-color: violet;
+        border-radius: 2.5vh;
+    }
+}

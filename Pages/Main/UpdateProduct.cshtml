@@ -2,13 +2,14 @@
 
 @using AutoParts.Models
 
-@model AutoParts.Pages.UpdateProductModel
+@model AutoParts.Pages.Main.UpdateProductModel
 @{
-    AutoPart part = Model.AutoPart!;
+    ViewData["Title"] = "Update Product";
+    AutoPart part = (ViewData[nameof(AutoPart)] as AutoPart)!;
 }
 @section Styles {
-    <link rel="stylesheet" href="~/css/update & upload/update-product.css">
-    <link rel="stylesheet" href="~/css/update & upload/generic.css">
+    <link rel="stylesheet" href="~/css/update-product.css">
+    <link rel="stylesheet" href="~/css/input-generic.css">
 }
 <main>
     <div class="description">
@@ -25,7 +26,8 @@
             </div>
         </div>
         <div id="updated-state">
-            <form id="update-form" method="post" asp-antiforgery="true" asp-action="/Main/Upload">
+            <form id="update-form" method="post" asp-antiforgery="true" asp-action="/Main/UpdateProduct">
+                <div asp-validation-summary="All"></div>
                 <input type="hidden" asp-for="AutoPart!.Id" value="@part.Id">
                 <div class="input-container">
                     <label asp-for="AutoPart!.Name" class="detail"></label>

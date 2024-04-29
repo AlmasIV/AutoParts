@@ -1,7 +1,7 @@
 ﻿@page
 @using AutoParts.Models
 
-@model IndexModel
+@model AutoParts.Pages.IndexModel
 @{
     ViewData["Title"] = "My Collection";
     string[] identifiers = {
@@ -14,6 +14,9 @@
         "amount",
         "sell"
     };
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css">
 }
 <main id="auto-parts-table">
     <table>

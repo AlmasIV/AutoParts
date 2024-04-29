@@ -1,22 +1,23 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
 using AutoParts.Models;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace AutoParts.Pages
+namespace AutoParts.Pages.Main;    
+public class HistoryModel : PageModel
 {
-    public class HistoryModel : PageModel
+    private readonly AppDbContext _dbContext;
+    public HistoryModel(AppDbContext dbContext){
+        _dbContext = dbContext;
+    }
+    
+    [BindNever]
+    public List<Order>? Orders { get; set; } = null;
+    public IActionResult OnGet()
     {
-        private readonly AppDbContext _dbContext;
-        [BindNever]
-        public List<Order>? Orders { get; set; } = null;
-        public HistoryModel(AppDbContext dbContext){
-            _dbContext = dbContext;
-        }
-        public void OnGet()
-        {
-            Orders = _dbContext.Orders.AsNoTracking().ToList();
-        }
+        Orders = _dbContext.Orders.AsNoTracking().ToList();
+        return Page();
     }
 }

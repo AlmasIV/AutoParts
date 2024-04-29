@@ -1,4 +1,7 @@
-/* These styles are used in the Update and Upload pages. */
+/*
+    These styles are used for <input> elements, accross the website. Mainly these styles are used in the Update, Upload, and Identity related pages.
+*/
+
 .input-container label, input, .error-message {
     display: block;
     width: 100%;
